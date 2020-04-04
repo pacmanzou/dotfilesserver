@@ -118,42 +118,6 @@ func! CompileRunGcc()
     endif
 endfunc
 "}}}
-" smooth_scroll{{{
-" let s:save_cpo = &cpo
-" set cpo&vim
-" " Scroll the screen up
-" function! init#up(dist, duration, speed)
-"   call s:init('u', a:dist, a:duration, a:speed)
-" endfunction
-" " Scroll the screen down
-" function! init#down(dist, duration, speed)
-"   call s:init('d', a:dist, a:duration, a:speed)
-" endfunction
-" " animation
-" function! s:init(dir, dist, duration, speed)
-"   for i in range(a:dist/a:speed)
-"     let start = reltime()
-"     if a:dir ==# 'd'
-"       exec "normal! ".a:speed."\<C-e>".a:speed."j"
-"     else
-"       exec "normal! ".a:speed."\<C-y>".a:speed."k"
-"     endif
-"     redraw
-"     let elapsed = s:get_ms_since(start)
-"     let snooze = float2nr(a:duration-elapsed)
-"     if snooze > 0
-"       exec "sleep ".snooze."m"
-"     endif
-"   endfor
-" endfunction
-" function! s:get_ms_since(time)
-"   let cost = split(reltimestr(reltime(a:time)), '\.')
-"   return str2nr(cost[0])*1000 + str2nr(cost[1])/1000.0
-" endfunction
-" noremap <silent> <C-U> :call init#up(&scroll,9,1)<CR>
-" noremap <silent> <C-D> :call init#down(&scroll,9,1)<CR>
-"}}}
-"}}}
 " ====================================================================
 " set{{{
 set shell=bash
@@ -428,8 +392,6 @@ Plug 'tmhedberg/SimpylFold',{'for': 'python'}
 Plug 'Vimjas/vim-python-pep8-indent',{'for': 'python'}
 " js
 Plug 'jelera/vim-javascript-syntax', {'for': [ 'javascript', 'html', 'css', 'php', 'less' ]}
-" go
-" Plug 'fatih/vim-go' , { 'for': 'go', 'tag': '*' }
 call plug#end()
 "}}}
 " ====================================================================
@@ -805,32 +767,5 @@ augroup json_autocmd
   autocmd FileType json setlocal formatoptions=tcq2l
   autocmd FileType json setlocal foldmethod=syntax
 augroup END
-"}}}
-" ====================================================================
-" vim-go{{{
-" let g:go_def_mapping_enabled                 = 0
-" let g:go_template_autocreate                 = 0
-" let g:go_textobj_enabled                     = 0
-" let g:go_auto_type_info                      = 1
-" let g:go_def_mapping_enabled                 = 0
-" let g:go_highlight_array_whitespace_error    = 1
-" let g:go_highlight_build_constraints         = 1
-" let g:go_highlight_chan_whitespace_error     = 1
-" let g:go_highlight_extra_types               = 1
-" let g:go_highlight_fields                    = 1
-" let g:go_highlight_format_strings            = 1
-" let g:go_highlight_function_calls            = 1
-" let g:go_highlight_function_parameters       = 1
-" let g:go_highlight_functions                 = 1
-" let g:go_highlight_generate_tags             = 1
-" let g:go_highlight_methods                   = 1
-" let g:go_highlight_operators                 = 1
-" let g:go_highlight_space_tab_error           = 1
-" let g:go_highlight_string_spellcheck         = 1
-" let g:go_highlight_structs                   = 1
-" let g:go_highlight_trailing_whitespace_error = 1
-" let g:go_highlight_types                     = 1
-" let g:go_highlight_variable_assignments      = 0
-" let g:go_highlight_variable_declarations     = 0
 "}}}
 " ====================================================================
