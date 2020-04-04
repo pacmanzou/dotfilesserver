@@ -119,39 +119,39 @@ func! CompileRunGcc()
 endfunc
 "}}}
 " smooth_scroll{{{
-let s:save_cpo = &cpo
-set cpo&vim
-" Scroll the screen up
-function! init#up(dist, duration, speed)
-  call s:init('u', a:dist, a:duration, a:speed)
-endfunction
-" Scroll the screen down
-function! init#down(dist, duration, speed)
-  call s:init('d', a:dist, a:duration, a:speed)
-endfunction
-" animation
-function! s:init(dir, dist, duration, speed)
-  for i in range(a:dist/a:speed)
-    let start = reltime()
-    if a:dir ==# 'd'
-      exec "normal! ".a:speed."\<C-e>".a:speed."j"
-    else
-      exec "normal! ".a:speed."\<C-y>".a:speed."k"
-    endif
-    redraw
-    let elapsed = s:get_ms_since(start)
-    let snooze = float2nr(a:duration-elapsed)
-    if snooze > 0
-      exec "sleep ".snooze."m"
-    endif
-  endfor
-endfunction
-function! s:get_ms_since(time)
-  let cost = split(reltimestr(reltime(a:time)), '\.')
-  return str2nr(cost[0])*1000 + str2nr(cost[1])/1000.0
-endfunction
-noremap <silent> <C-U> :call init#up(&scroll,9,1)<CR>
-noremap <silent> <C-D> :call init#down(&scroll,9,1)<CR>
+" let s:save_cpo = &cpo
+" set cpo&vim
+" " Scroll the screen up
+" function! init#up(dist, duration, speed)
+"   call s:init('u', a:dist, a:duration, a:speed)
+" endfunction
+" " Scroll the screen down
+" function! init#down(dist, duration, speed)
+"   call s:init('d', a:dist, a:duration, a:speed)
+" endfunction
+" " animation
+" function! s:init(dir, dist, duration, speed)
+"   for i in range(a:dist/a:speed)
+"     let start = reltime()
+"     if a:dir ==# 'd'
+"       exec "normal! ".a:speed."\<C-e>".a:speed."j"
+"     else
+"       exec "normal! ".a:speed."\<C-y>".a:speed."k"
+"     endif
+"     redraw
+"     let elapsed = s:get_ms_since(start)
+"     let snooze = float2nr(a:duration-elapsed)
+"     if snooze > 0
+"       exec "sleep ".snooze."m"
+"     endif
+"   endfor
+" endfunction
+" function! s:get_ms_since(time)
+"   let cost = split(reltimestr(reltime(a:time)), '\.')
+"   return str2nr(cost[0])*1000 + str2nr(cost[1])/1000.0
+" endfunction
+" noremap <silent> <C-U> :call init#up(&scroll,9,1)<CR>
+" noremap <silent> <C-D> :call init#down(&scroll,9,1)<CR>
 "}}}
 "}}}
 " ====================================================================
@@ -410,16 +410,14 @@ Plug 'voldikss/vim-codelf'
 Plug 'sbdchd/neoformat', {'on': 'Neoformat'}
 " fuzzy finder
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'dyng/ctrlsf.vim'
 " auto-completetion
-Plug 'Shougo/deoplete.nvim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'wellle/tmux-complete.vim' " tmux source for coc
 " snippets
 Plug 'Shougo/neosnippet.vim'
 " tags
-Plug 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar', {'do': 'TagbarToggle'}
 " debug
 " Plug 'puremourning/vimspector', {'do': './install_gadget.py --enable-c --enable-python'}
 " git
@@ -463,7 +461,7 @@ nnoremap <silent> <Space>t :TagbarToggle<cr>
 let g:tagbar_width = 30
 let g:tagbar_sort = 0
 let g:tagbar_autofocus = 1
-let g:tagbar_left = 1
+let g:tagbar_right = 1
 let g:tagbar_map_showproto = '<c-b>'
 "}}}
 " ====================================================================
@@ -615,7 +613,6 @@ if executable('rg')
  set grepformat=%f:%l:%c:%m,%f:%l:%m
  let g:ctrlp_user_command = 'rg %s -i --files --no-heading --max-depth 10'
 endif
-let g:ctrlp_match_func = {'match' : 'pymatcher#PyMatch' }
 let g:ctrlp_use_caching = 1
 let dir = ['\.git', '\.hg$', '\.svn$', '\.vimundo$', '\.cache/ctrlp$',
           \    '\.rbenv', '\.gem', 'backup', 'Documents', $TMPDIR,
@@ -721,21 +718,13 @@ let g:extra_whitespace_ignored_filetypes = ['ctrlsf']
 "}}}
 "}}}
 " ====================================================================
-" Shougo/deoplete.nvim{{{
-let g:deoplete#enable_at_startup = 1
-"}}}
-" ====================================================================
 " coc.nvim{{{
 let g:coc_global_extensions=[
-            \'coc-prettier',
             \'coc-translator',
-            \'coc-browser',
-            \'coc-java',
             \'coc-phpls',
             \'coc-python',
             \'coc-vimlsp',
             \'coc-html',
-            \'coc-json',
             \'coc-css',
             \'coc-tsserver'
             \]
@@ -745,8 +734,6 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> <C-N> <Plug>(coc-diagnostic-next-error)
 nmap <silent> <C-P> <Plug>(coc-diagnostic-prev-error)
-nmap <silent> <space>f <Plug>(coc-format)
-vmap <silent> <space>f <Plug>(coc-format-selected)
 nmap cn <Plug>(coc-rename)
 nmap <silent> t <Plug>(coc-translator-e)
 vmap <silent> t <Plug>(coc-translator-ev)
