@@ -1,6 +1,6 @@
 {
   "coc.preferences.extensionUpdateCheck": "weekly",
-  "suggest.enablePreview": true,
+  "suggest.enablePreview": false,
   "suggest.floatEnable": true,
   "python.jediEnabled": false,
   "python.formatting.provider": "yapf",
@@ -11,17 +11,5 @@
   "javascript.referencesCodeLens.enable": true,
   "javascript.showUnused": true,
   "javascript.suggest.names": true,
-  "javascript.suggestionActions.enabled": true,
-  "languageserver": {
-    "ccls": {
-      "command": "ccls",
-      "filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
-      "rootPatterns": [".ccls-root", "compile_commands.json"],
-      "initializationOptions": {
-        "cache": {
-          "directory": ".ccls-cache"
-        }
-      }
-    }
-  }
+  "javascript.suggestionActions.enabled": true
 }
