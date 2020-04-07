@@ -6,7 +6,7 @@ if [ -f /etc/bashrc ]; then
 fi
 
 if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
-    SESSION_NAME="server"
+    SESSION_NAME="pserver"
     tmux attach-session -t $SESSION_NAME || tmux new-session -s $SESSION_NAME
 fi
 
