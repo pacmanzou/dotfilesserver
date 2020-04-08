@@ -15,6 +15,7 @@ export NVIM_PYTHON_LOG_LEVEL=DEBUG
 
 alias f='fish'
 alias r='ranger'
+alias sr='sudo -E ranger'
 alias h='htop'
 alias l='lazygit'
 alias e='exit'
