@@ -31,6 +31,7 @@ nnoremap <silent> <Space>L :call ClearHighlightLines()<CR>
 "}}}
 " ====================================================================
 " set{{{
+let mapleader=","
 set history=10000
 set suffixes=.bak,~,.o,.h,.info,.swp,.obj,.pyc,.pyo,.egg-info,.class
 set wildignore=*.o,*.obj,*~,*.exe,*.a,*.pdb,*.lib "stuff to ignore when tab completing
@@ -91,6 +92,7 @@ set updatetime=100
 set nowritebackup
 set nobackup
 set shortmess+=c
+set signcolumn=yes
 "}}}
 " ====================================================================
 " map {{{
@@ -238,7 +240,7 @@ noremap <silent> gV ggvG$
 " ====================================================================
 " terminal{{{
 tnoremap <C-O> <C-\><C-N>
-nnoremap <silent> , :terminal<CR>
+nnoremap <silent> <Leader>x :terminal<CR>
 "}}}
 " ====================================================================
 filetype plugin on
@@ -246,9 +248,8 @@ filetype on
 filetype indent on
 filetype plugin indent on
 let g:plug_window = '-tabnew'
-call plug#begin('~/.config/nvim/plugged')
-Plug 'rbong/vim-crystalline'
-Plug 'kevinhwang91/rnvimr',{'do': 'make sync'}
+call plug#begin('~/.vim/plugged')
+Plug 'morhetz/gruvbox'
 Plug 'yggdroot/indentline' " comfortable and obvious code indentline
 Plug 'tpope/vim-surround' " '',()[]{}
 Plug 'tpope/vim-commentary' " annotation code
@@ -260,6 +261,8 @@ Plug 'airblade/vim-gitgutter'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'wellle/tmux-complete.vim' " tmux source for coc
 call plug#end()
+colorscheme gruvbox
+set termguicolors
 "}}}
 " ====================================================================
 " indentline{{{
@@ -295,54 +298,6 @@ map  <Space>c  <Plug>Commentary
 nmap <Space>cc <Plug>CommentaryLine
 "}}}
 " ====================================================================
-" vim-crystalline{{{
-	function! StatusDiagnostic() abort
-	  let info = get(b:, 'coc_diagnostic_info', {})
-	  if empty(info) | return '' | endif
-	  let msgs = []
-	  if get(info, 'error', 0)
-	    call add(msgs, 'E' . info['error'])
-	  endif
-	  if get(info, 'warning', 0)
-	    call add(msgs, 'W' . info['warning'])
-	  endif
-	  return join(msgs, ' ') . ' ' . get(g:, 'coc_status', '')
-	endfunction
-  function! StatusLine(current, width)
-    let l:s = ''
-    if a:current
-      let l:s .= crystalline#mode() . crystalline#right_mode_sep('')
-    else
-      let l:s .= '%#CrystallineInactive#'
-    endif
-    let l:s .= ' %f%h%w%m%r '
-    if a:current
-      let l:s .= crystalline#right_sep('', 'Fill') . '  %{fugitive#head()}  %{StatusDiagnostic()}  %{g:codelf_status}'
-    endif
-    let l:s .= '%='
-    if a:current
-      let l:s .= crystalline#left_sep('', 'Fill')
-      let l:s .= crystalline#left_mode_sep('')
-    endif
-    if a:width > 20
-      let l:s .= ' %{&ft}[%{&fenc!=#""?&fenc:&enc}][%{&ff}] %l/%L %c%V %P '
-    else
-      let l:s .= ''
-    endif
-    return l:s
-  endfunction
-  function! TabLine()
-    let l:vimlabel = ''
-    return crystalline#bufferline(2, len(l:vimlabel), 1).'%=%#CrystallineTab#' .l:vimlabel
-  endfunction
-  let g:crystalline_enable_sep = 0
-  let g:crystalline_statusline_fn = 'StatusLine'
-  let g:crystalline_tabline_fn = 'TabLine'
-  let g:crystalline_theme = 'gruvbox'
-  set showtabline=2
-  set guioptions-=e
-"}}}
-" ====================================================================
 " auto-pairs{{{
 nmap <Space>p <M-p>
 let g:AutoPairsFlyMode = 0
@@ -350,16 +305,13 @@ let g:AutoPairsFlyMode = 0
 " ====================================================================
 " vim-fugitive{{{
 let g:fugitive_no_maps = 1
-nnoremap <silent> <Leader>m :GitMessenger<CR>
 nnoremap <silent> <Leader>s H:Gstatus<CR>
 nnoremap <silent> <Leader>l :tabnew<CR>:GlLog<CR>
 nnoremap <silent> <Leader>c H:Gcommit<CR>
-nnoremap <silent> <Leader>br :Gbrowse<CR>
-vnoremap <silent> <Leader>br :Gbrowse<CR>
 nnoremap <silent> <Leader>bl :Gblame<CR>
 vnoremap <silent> <Leader>bl :Gblame<CR><C-W>H
-nnoremap <silent> <Leader>push H:split<CR>:res -8<CR>:terminal git push<CR>
-nnoremap <silent> <Leader>pull H:split<CR>:res -8<CR>:terminal git pull<CR>
+nnoremap <silent> <Leader>push H:terminal git push<CR>
+nnoremap <silent> <Leader>pull H:terminal git pull<CR>
 "}}}
 " ====================================================================
 " vim-gitgutter{{{
@@ -368,7 +320,7 @@ let g:gitgutter_async = 1
 let g:gitgutter_max_signs = 2048
 let g:gitgutter_map_keys = 0
 let g:gitgutter_override_sign_column_highlight = 1
-let g:gitgutter_preview_win_floating = 1
+let g:gitgutter_preview_win_floating = 0
 let g:gitgutter_sign_added = '++'
 let g:gitgutter_sign_modified = '+-'
 let g:gitgutter_sign_removed = '--'
