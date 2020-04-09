@@ -1,0 +1,238 @@
+" ====================================================================
+" highlight the current line{{{
+function! ToggleHighlightCurrentLine()
+    if !exists('b:myhllines')
+        let b:myhllines = {}
+    endif
+    let lnum = line('.')
+    if has_key(b:myhllines, lnum)
+        silent! call matchdelete(b:myhllines[lnum])
+        unlet b:myhllines[lnum]
+    else
+        let matchid = matchadd('Search', '\%'.lnum.'l')
+        let b:myhllines[lnum] = matchid
+    endif
+endfunction
+function! ClearHighlightLines()
+    if exists('b:myhllines')
+        for value in values(b:myhllines)
+            silent! call matchdelete(value)
+        endfor
+    endif
+    let b:myhllines = {}
+endfunction
+nnoremap <silent> <Space>l :call ToggleHighlightCurrentLine()<CR>
+nnoremap <silent> <Space>L :call ClearHighlightLines()<CR>
+"}}}
+" ====================================================================
+" set{{{
+set history=10000
+set suffixes=.bak,~,.o,.h,.info,.swp,.obj,.pyc,.pyo,.egg-info,.class
+set wildignore=*.o,*.obj,*~,*.exe,*.a,*.pdb,*.lib "stuff to ignore when tab completing
+set wildignore+=__pycache__,.stversions,*.spl,*.out,%*
+set wildignore+=*.so,*.dll,*.swp,*.egg,*.jar,*.class,*.pyc,*.pyo,*.bin,*.dex
+set wildignore+=*.zip,*.7z,*.rar,*.gz,*.tar,*.gzip,*.bz2,*.tgz,*.xz
+set wildignore+=*DS_Store*,*.ipch
+set wildignore+=*.gem
+set wildignore+=*.png,*.jpg,*.gif,*.bmp,*.tga,*.pcx,*.ppm,*.img,*.iso
+set wildignore+=*.so,*.swp,*.zip,*/.Trash/**,*.pdf,*.dmg,*/.rbenv/**
+set wildignore+=*/.nx/**,*.app,*.git,.git
+set wildignore+=*.wav,*.mp3,*.ogg,*.pcm
+set wildignore+=*.mht,*.suo,*.sdf,*.jnlp
+set wildignore+=*.chm,*.epub,*.pdf,*.mobi,*.ttf
+set wildignore+=*.mp4,*.avi,*.flv,*.mov,*.mkv,*.swf,*.swc
+set wildignore+=*.ppt,*.pptx,*.docx,*.xlt,*.xls,*.xlsx,*.odt,*.wps
+set wildignore+=*.msi,*.crx,*.deb,*.vfd,*.apk,*.ipa,*.bin,*.msu
+set wildignore+=*.gba,*.sfc,*.078,*.nds,*.smd,*.smc
+set wildignore+=*.linux2,*.win32,*.darwin,*.freebsd,*.linux,*.android
+set wildmenu
+set noshowcmd
+set noshowmatch
+set noshowmode
+set nospell
+set novisualbell
+set smartcase
+set smartindent
+set smarttab
+let &t_ut=''
+set encoding=utf-8
+set report=0
+set ruler
+set fillchars=vert:\ ,stl:\ ,stlnc:\
+set magic
+set laststatus=2
+set completeopt=longest,noinsert,menuone,noselect,preview
+set terse
+set number
+set relativenumber
+set numberwidth=1
+set noeb
+set wrap
+set autoread
+set hlsearch
+exec "nohlsearch"
+set incsearch
+set autoindent
+set hidden
+set ignorecase
+set cindent
+set backspace=indent,eol,start
+set expandtab
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set autochdir
+set updatetime=100
+set nowritebackup
+set nobackup
+set shortmess+=c
+"}}}
+" ====================================================================
+" map {{{
+vnoremap ; :
+nnoremap Q @q
+nnoremap ; :
+nnoremap / mr/
+nnoremap Y y$
+nnoremap > >>
+nnoremap < <<
+nnoremap <silent> <Space>w :set hlsearch<CR>
+nnoremap <silent> <Space>W :set nohlsearch<CR>
+nnoremap <silent> <Backspace><Space> :g/^\s*$/d<CR>
+nnoremap <silent> gh K
+"}}}
+" ====================================================================
+" imap{{{
+imap <C-F> <Right>
+imap <C-B> <Left>
+imap <C-A> <Home>
+imap <C-E> <End>
+imap <C-R> <Nop>
+imap <C-V> <Nop>
+imap <C-Y> <Nop>
+imap <C-O> <Left><Esc>o
+imap <C-C> <Esc>
+imap <C-K> <Nop>
+imap <C-J> <Nop>
+imap <C-Z> <Nop>
+"}}}
+" ====================================================================
+" cmd{{{
+cnoremap <C-A> <Home>
+cnoremap <C-S> <Nop>
+cnoremap <C-E> <End>
+cnoremap <C-L> <Nop>
+cnoremap <C-K> <Nop>
+cnoremap <C-J> <Nop>
+cnoremap <C-Z> <Nop>
+cnoremap <C-X> <Nop>
+cnoremap <C-V> <Nop>
+cnoremap <C-B> <Left>
+cnoremap <C-Y> <Nop>
+cnoremap <C-O> <Nop>
+cnoremap <C-R> <Nop>
+cnoremap <C-Q> <Nop>
+cnoremap <C-F> <Right>
+"}}}
+" ====================================================================
+" nop{{{
+map X <Nop>
+map b <Nop>
+map B <Nop>
+map <Space> <Nop>
+map K <Nop>
+map J <Nop>
+map Z <Nop>
+map ZZ <Nop>
+map <C-]> <Nop>
+map <C-B> <Nop>
+map <C-Z> <Nop>
+map <C-F> <Nop>
+map <C-Y> <Nop>
+"}}}
+" ====================================================================
+" fold{{{
+set fdm=marker
+set foldenable
+set foldcolumn=0
+noremap zi za
+noremap zn zr
+noremap zN zR
+map zF <Nop>
+map za <Nop>
+map zA <Nop>
+map zI <Nop>
+map zr <Nop>
+map zR <Nop>
+map zo <Nop>
+map zO <Nop>
+map zc <Nop>
+map zC <Nop>
+map zv <Nop>
+map zV <Nop>
+map zx <Nop>
+map zX <Nop>
+"}}}
+" ====================================================================
+" scrolloff{{{
+set scrolloff=5
+"}}}
+" ====================================================================
+" save cursor{{{
+au BufReadPost * if line("'\"")>1 && line("'\"")<=line("$") | exe "normal! g'\"" | endif
+"}}}
+" ====================================================================
+" substitute{{{
+vnoremap <Space>s :s///g<left><left><left>
+nnoremap <Space>s :%s///g<left><left><left>
+"}}}
+" ====================================================================
+" windows split{{{
+set splitright
+set splitbelow
+"}}}
+" ====================================================================
+" windows focus{{{
+noremap <silent> <C-L> <C-W>l
+noremap <silent> <C-H> <C-W>h
+noremap <silent> <C-J> <C-W>j
+noremap <silent> <C-K> <C-W>k
+"}}}
+" ====================================================================
+" windows size{{{
+nnoremap <silent> zk :res +5<CR>
+nnoremap <silent> zj :res -5<CR>
+nnoremap <silent> zl :vertical resize-5<CR>
+nnoremap <silent> zh :vertical resize+5<CR>
+"}}}
+" ====================================================================
+" windows exchange{{{
+nnoremap <silent> <C-X> <C-W>K
+nnoremap <silent> <C-V> <C-W>H
+nnoremap <silent> <C-T> <C-W>T
+"}}}
+" ====================================================================
+" cursor move{{{
+noremap <C-E> $
+noremap <C-A> ^
+noremap e E
+noremap w W
+noremap E gE
+noremap W B
+"}}}
+" ====================================================================
+" tab switch{{{
+nnoremap <silent> <Tab> :tabnext<CR>
+nnoremap <silent> <S-Tab> :tabprevious<CR>
+"}}}
+" ====================================================================
+" visual{{{
+noremap <silent> vv <C-V>
+noremap <silent> gV ggvG$
+"}}}
+" ====================================================================
+" terminal{{{
+tnoremap <C-O> <C-\><C-N>
+nnoremap <silent> , :terminal<CR>
+"}}}
+" ====================================================================
