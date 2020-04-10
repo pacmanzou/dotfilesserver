@@ -265,9 +265,15 @@ Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " standby plugin
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'FelikZ/ctrlp-py-matcher'
+Plug 'terryma/vim-smooth-scroll'
 call plug#end()
 colorscheme gruvbox
 set termguicolors
+"}}}
+" ====================================================================
+" terryma/vim-smooth-scroll{{{
+nnoremap <silent> <C-U> :call smooth_scroll#up(&scroll,9,1)<CR>
+nnoremap <silent> <C-D> :call smooth_scroll#down(&scroll,9,1)<CR>
 "}}}
 " ====================================================================
 " indentline{{{
