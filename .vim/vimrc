@@ -250,6 +250,7 @@ filetype plugin indent on
 let g:plug_window = '-tabnew'
 call plug#begin('~/.vim/plugged')
 Plug 'morhetz/gruvbox'
+Plug 'rbong/vim-crystalline'
 Plug 'yggdroot/indentline' " comfortable and obvious code indentline
 Plug 'tpope/vim-surround' " '',()[]{}
 Plug 'tpope/vim-commentary' " annotation code
@@ -260,10 +261,10 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'wellle/tmux-complete.vim' " tmux source for coc
+Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " standby plugin
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'FelikZ/ctrlp-py-matcher'
-Plug 'dyng/ctrlsf.vim'
 call plug#end()
 colorscheme gruvbox
 set termguicolors
@@ -274,6 +275,42 @@ autocmd! User indentLine doautocmd indentLine Syntax
 let g:indentLine_char_list = ['|']
 let g:indentLine_fileTypeExclude = ['json', 'markdown']
 let g:indentLine_bufTypeExclude = ['help', 'terminal', 'nofile']
+"}}}
+" ====================================================================
+" vim-crystalline{{{
+  function! StatusLine(current, width)
+    let l:s = ''
+    if a:current
+      let l:s .= crystalline#mode() . crystalline#right_mode_sep('')
+    else
+      let l:s .= '%#CrystallineInactive#'
+    endif
+    let l:s .= ' %f%h%w%m%r '
+    if a:current
+      let l:s .= crystalline#right_sep('', 'Fill') . ' %{fugitive#head()}'
+    endif
+    let l:s .= '%='
+    if a:current
+      let l:s .= crystalline#left_sep('', 'Fill')
+      let l:s .= crystalline#left_mode_sep('')
+    endif
+    if a:width > 20
+      let l:s .= ' %{&ft}[%{&fenc!=#""?&fenc:&enc}][%{&ff}] %l/%L %c%V %P '
+    else
+      let l:s .= ''
+    endif
+    return l:s
+  endfunction
+  function! TabLine()
+    let l:vimlabel = ''
+    return crystalline#bufferline(2, len(l:vimlabel), 1).'%=%#CrystallineTab#' .l:vimlabel
+  endfunction
+  let g:crystalline_enable_sep = 0
+  let g:crystalline_statusline_fn = 'StatusLine'
+  let g:crystalline_tabline_fn = 'TabLine'
+  let g:crystalline_theme = 'gruvbox'
+  set showtabline=2
+  set guioptions-=e
 "}}}
 " ====================================================================
 " vim-surround{{{
@@ -337,28 +374,31 @@ nmap <silent> <Leader>a <Plug>(GitGutterStageHunk)
 "}}}
 " ====================================================================
 " ctrlp{{{
-nnoremap <silent> <C-P>f :CtrlPCurFile<CR>
-nnoremap <silent> <C-P>h :CtrlPMRUFile<CR>
-nnoremap <silent> <C-P>b :CtrlPBuffer<CR>
-nnoremap <silent> <C-P>l :CtrlPLine<CR>
-nnoremap <silent> <C-P>t :CtrlPBufTag<CR>
-nnoremap <silent> <C-P>s :CtrlPSmartTabs<CR>
-nnoremap <silent> <C-P>m :CtrlpMenu<CR>
+nnoremap <silent> <C-F>f :CtrlPCurFile<CR>
+nnoremap <silent> <C-F><C-F> :CtrlPCurFile<CR>
+nnoremap <silent> <C-F>h :CtrlPMRUFile<CR>
+nnoremap <silent> <C-F><C-H> :CtrlPMRUFile<CR>
+nnoremap <silent> <C-F>b :CtrlPBuffer<CR>
+nnoremap <silent> <C-F><C-B> :CtrlPBuffer<CR>
+nnoremap <silent> <C-F>w :CtrlPLine<CR>
+nnoremap <silent> <C-F><C-w> :CtrlPLine<CR>
+nnoremap <silent> <C-F>t :CtrlPBufTag<CR>
+nnoremap <silent> <C-F><C-T> :CtrlPBufTag<CR>
 nnoremap <C-Space> <Nop>
-if executable('rg')
- set grepprg=rg\ --vimgrep\ --no-heading
- set grepformat=%f:%l:%c:%m,%f:%l:%m
- let g:ctrlp_user_command = 'rg %s -i --files --no-heading --max-depth 10'
-endif
+" if executable('rg')
+"  set grepprg=rg\ --vimgrep\ --no-heading
+"  set grepformat=%f:%l:%c:%m,%f:%l:%m
+"  let g:ctrlp_user_command = 'rg %s -i --files --no-heading --max-depth 10'
+" endif
 let g:ctrlp_match_func = {'match' : 'pymatcher#PyMatch' }
 let g:ctrlp_use_caching = 1
 let dir = ['\.git', '\.hg$', '\.svn$', '\.vimundo$', '\.cache/ctrlp$',
           \    '\.rbenv', '\.gem', 'backup', 'Documents', $TMPDIR,
           \    'vendor']
-let g:ctrlp_custom_ignore = {
-      \ 'dir': '\v[\/]?(' . join(dir, '|') . ')',
-      \ 'file': '\v(\.exe|\.so|\.dll|\.DS_Store|\.db|COMMIT_EDITMSG)$'
-      \ }
+" let g:ctrlp_custom_ignore = {
+"       \ 'dir': '\v[\/]?(' . join(dir, '|') . ')',
+"       \ 'file': '\v(\.exe|\.so|\.dll|\.DS_Store|\.db|COMMIT_EDITMSG)$'
+"       \ }
 let g:ctrlp_map = ''
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
@@ -402,7 +442,7 @@ let g:ctrlp_prompt_mappings = {
     \ 'AcceptSelection("t")': ['<C-T>'],
     \ 'AcceptSelection("v")': ['<C-V>'],
     \ 'ToggleRegex()':        [],
-    \ 'ToggleByFname()':      ['<C-F>'],
+    \ 'ToggleByFname()':      [],
     \ 'ToggleType(1)':        ['<C-J>'],
     \ 'ToggleType(-1)':       ['<C-K>'],
     \ 'PrtExpandDir()':       [],
@@ -410,49 +450,15 @@ let g:ctrlp_prompt_mappings = {
     \ 'PrtInsert()':          [],
     \ 'PrtCurStart()':        ['<C-A>'],
     \ 'PrtCurEnd()':          ['<C-E>'],
-    \ 'PrtCurLeft()':         ['<Left>'],
-    \ 'PrtCurRight()':        ['<C-L>', '<Right>'],
+    \ 'PrtCurLeft()':         ['<C-B>', '<Left>'],
+    \ 'PrtCurRight()':        ['<C-F>', '<Right>'],
     \ 'PrtClearCache()':      ['<C-R>'],
     \ 'PrtDeleteEnt()':       ['<C-D>'],
     \ 'CreateNewFile()':      ['<C-I>'],
-    \ 'MarkToOpen()':         ['<C-Space>'],
+    \ 'MarkToOpen()':         [],
     \ 'OpenMulti()':          [],
     \ 'PrtExit()':            ['<Esc>', '<C-C>', '<C-[>'],
     \ }
-"}}}
-" ctrlsf{{{
-nnoremap <C-S>f :CtrlSF 
-nnoremap <silent> <C-S>o :CtrlSFOpen<CR>
-    let g:ctrlsf_mapping = {
-        \ "next": "J",
-        \ "prev": "K",
-        \ "open": "<CR>",
-        \ "openb": "",
-        \ "split": "<C-X>",
-        \ "vsplit": "<C-V>",
-        \ "tab": "<C-T>",
-        \ "tabb": "",
-        \ "popen": "p",
-        \ "popenf": "",
-        \ "quit": "q",
-        \ "chgmode": "M",
-        \ "stop": "<C-C>",
-        \ }
-let g:ctrlsf_position = 'bottom'
-let g:ctrlsf_ackprg = 'ag'
-let g:ctrlsf_default_view_mode = 'normal'
-let g:ctrlsf_search_mode = 'async'
-let g:ctrlsf_populate_qflist = 1
-let g:ctrlsf_parse_speed = 100
-let g:ctrlsf_toggle_map_key = '\t'
-let g:ctrlsf_extra_backend_args = {
-    \ 'pt': '--global-gitignore'
-    \ }
-let g:ctrlsf_auto_focus = {
-    \ 'at': 'start'
-    \ }
-let g:ctrlsf_extra_root_markers = ['.root']
-let g:extra_whitespace_ignored_filetypes = ['ctrlsf']
 "}}}
 " ====================================================================
 " nerdtree{{{
@@ -466,5 +472,27 @@ let NERDTreeMinimalUI=1
 let NERDTreeAutoDeleteBuffer=1
 let g:NERDTreeShowIgnoredStatus = 1
 let g:NERDTreeShowLineNumbers=1
+"}}}
+" ====================================================================
+" undotree{{{
+nnoremap <Space>u :UndotreeToggle<CR>
+if empty(glob('~/.cache/tmp/backup'))
+silent !mkdir -p ~/.cache/tmp/backup
+endif
+if empty(glob('~/.cache/tmp/undo'))
+silent !mkdir -p ~/.cache/tmp/undo
+endif
+set backupdir=~/.cache/tmp/backup,.
+set directory=~/.cache/tmp/backup,.
+if has('persistent_undo')
+    set undofile
+    set undodir=~/.cache/tmp/undo,.
+endif
+let g:undotree_DiffAutoOpen=1
+let g:undotree_SetFocusWhenToggle=1
+let g:undotree_ShortIndicators=1
+let g:undotree_WindowLayout=2
+let g:undotree_DiffpanelHeight=5
+let g:undotree_SplitWidth=19
 "}}}
 " ============================================================================
