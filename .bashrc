@@ -13,6 +13,8 @@ fi
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
+alias la='ls -la'
+alias ll='ls -l'
 alias d='docker'
 alias s='systemctl'
 alias r='ranger'
