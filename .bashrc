@@ -15,10 +15,7 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias la='ls -la'
 alias ll='ls -l'
-alias d='docker'
-alias s='systemctl'
 alias r='ranger'
-alias h='htop'
 alias e='exit'
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
