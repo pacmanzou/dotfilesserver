@@ -262,10 +262,8 @@ Plug 'airblade/vim-gitgutter'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'wellle/tmux-complete.vim' " tmux source for coc
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " standby plugin
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'FelikZ/ctrlp-py-matcher'
-" Plug 'terryma/vim-smooth-scroll'
 call plug#end()
 colorscheme gruvbox
 set background=dark
@@ -273,9 +271,6 @@ highlight Normal guibg=NONE ctermbg=None
 " set termguicolors
 "}}}
 " ====================================================================
-" terryma/vim-smooth-scroll
-" nnoremap <silent> <C-U> :call smooth_scroll#up(&scroll,9,1)<CR>
-" nnoremap <silent> <C-D> :call smooth_scroll#down(&scroll,9,1)<CR>
 " indentline{{{
 autocmd! User indentLine doautocmd indentLine Syntax
 let g:indentLine_char_list = ['|']
@@ -476,19 +471,6 @@ let g:ctrlp_prompt_mappings = {
     \ 'OpenMulti()':          [],
     \ 'PrtExit()':            ['<Esc>', '<C-C>', '<C-[>'],
     \ }
-"}}}
-" ====================================================================
-" nerdtree{{{
-nnoremap <silent> T :NERDTreeToggle<cr>
-let g:NERDTreeDirArrowExpandable = '+'
-let g:NERDTreeDirArrowCollapsible = '-'
-let NERDTreeWinSize=25
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-let NERDTreeShowHidden=1
-let NERDTreeMinimalUI=1
-let NERDTreeAutoDeleteBuffer=1
-let g:NERDTreeShowIgnoredStatus = 1
-let g:NERDTreeShowLineNumbers=1
 "}}}
 " ====================================================================
 " undotree{{{
