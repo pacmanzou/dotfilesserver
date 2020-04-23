@@ -387,7 +387,6 @@ let g:coc_global_extensions=[
             \'coc-html',
             \'coc-json',
             \'coc-css',
-            \'coc-tsserver'
             \]
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gr <Plug>(coc-references)
