@@ -4,6 +4,51 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   silent execute "!curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
   autocmd VimEnter * PlugInstall
 endif
+" helptab{{{
+function! s:helptab()
+  if &buftype == 'help'
+    wincmd T
+    nnoremap <buffer> q :q<CR>
+  endif
+endfunction
+autocmd BufEnter *.txt call s:helptab()
+"}}}
+" language support{{{
+nnoremap <Leader>r :call CompileRunGcc()<CR>
+func! CompileRunGcc()
+    exec "w"
+    if &filetype == 'c'
+        set splitbelow
+        silent! exec "!g++ % -o %<"
+        :sp
+        :res -9
+        :term ./%<
+    elseif &filetype == 'cpp'
+        set splitbelow
+        silent! exec "!g++ -std=c++11 % -Wall -o %<"
+        :sp
+        :res -9
+        :term ./%<
+    elseif &filetype == 'java'
+        silent! exec "!javac %"
+        :sp
+        :res -9
+        :term java %:r
+    elseif &filetype == 'sh'
+        :!time bash %
+    elseif &filetype == 'python'
+        set splitbelow
+        :sp
+        :res -9
+        :term python3 %
+    elseif &filetype == 'go'
+        set splitbelow
+        :sp
+        :res -9
+        :term go run %
+    endif
+endfunc
+"}}}
 " highlight the current line{{{
 function! ToggleHighlightCurrentLine()
     if !exists('b:myhllines')
@@ -260,6 +305,13 @@ Plug 'terryma/vim-multiple-cursors' " multiple currors
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'mattn/emmet-vim', {'for': ['html', 'css', 'php', 'less']}
+Plug 'voldikss/vim-codelf'
+Plug 'Shougo/neosnippet.vim'
+Plug 'luochen1990/rainbow' " obvious pairs
+Plug 'tmhedberg/SimpylFold',{'for': 'python'}
+Plug 'Vimjas/vim-python-pep8-indent',{'for': 'python'}
+Plug 'jelera/vim-javascript-syntax', {'for': [ 'javascript', 'html', 'css', 'php', 'less' ]}
 Plug 'wellle/tmux-complete.vim' " tmux source for coc
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'ctrlpvim/ctrlp.vim'
@@ -271,6 +323,52 @@ highlight Normal guibg=NONE ctermbg=None
 " set termguicolors
 "}}}
 " ====================================================================
+" json{{{
+autocmd BufNewFile,BufRead *.json set filetype=json
+augroup json_autocmd
+  autocmd!
+  autocmd FileType json setlocal autoindent
+  autocmd FileType json setlocal formatoptions=tcq2l
+  autocmd FileType json setlocal foldmethod=syntax
+augroup END
+"}}}
+" ====================================================================
+" SimpylFold{{{
+" Vimjas/vim-python-pep8-indent
+let g:SimpylFold_docstring_preview = 1
+let g:python_highlight_all = 1
+" let g:python_slow_sync = 0
+"}}}
+" ====================================================================
+" neosnippet{{{
+imap <C-J> <Plug>(neosnippet_expand_or_jump)
+smap <C-J> <Plug>(neosnippet_expand_or_jump)
+xmap <C-J> <Plug>(neosnippet_expand_target)
+set conceallevel=2
+set concealcursor=niv
+let g:neosnippet#enable_snipmate_compatibility = 1
+let g:neosnippet#snippets_directory='~/.config/nvim/snippets'
+"}}}
+" ====================================================================
+" rainbow{{{
+let g:rainbow_active = 1
+    let g:rainbow_conf = {}
+    let g:rainbow_conf.guifgs = ['white', 'yellow', 'darkorange', 'darkgray', 'darkorange']
+    let g:rainbow_conf.ctermfgs = ['darkblue', 'darkyellow', 'darkgreen', 'darkgray', 'darkmagenta']
+    let g:rainbow_conf.operators = '_,_'
+    let g:rainbow_conf.parentheses = ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold']
+    let g:rainbow_conf.separately = { '*': {} }
+"}}}
+" ====================================================================
+" emmet-vim"{{{
+imap <C-K> <C-Z>,
+let g:user_emmet_leader_key='<C-Z>'
+"}}}
+" ====================================================================
+" codelf{{{
+imap <silent> <C-L> <Esc>:call codelf#start()<CR>
+"}}}
+" ====================================================================
 " indentline{{{
 autocmd! User indentLine doautocmd indentLine Syntax
 let g:indentLine_char_list = ['|']
@@ -280,16 +378,42 @@ let g:indentLine_bufTypeExclude = ['help', 'terminal', 'nofile']
 " ====================================================================
 " coc.nvim{{{
 let g:coc_global_extensions=[
+            \'coc-prettier',
+            \'coc-java',
             \'coc-explorer',
+            \'coc-phpls',
+            \'coc-python',
+            \'coc-vimlsp',
+            \'coc-html',
+            \'coc-json',
+            \'coc-css',
+            \'coc-tsserver'
             \]
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> <C-N> <Plug>(coc-diagnostic-next-error)
+nmap <silent> <C-P> <Plug>(coc-diagnostic-prev-error)
+nmap <silent> <space>f <Plug>(coc-format)
+vmap <silent> <space>f <Plug>(coc-format-selected)
+nmap cn <Plug>(coc-rename)
 nnoremap <silent> t :CocCommand explorer<CR>
 "}}}
 " ====================================================================
 " vim-crystalline{{{
+	function! StatusDiagnostic() abort
+	  let info = get(b:, 'coc_diagnostic_info', {})
+	  if empty(info) | return '' | endif
+	  let msgs = []
+	  if get(info, 'error', 0)
+	    call add(msgs, ' E' . info['error'])
+	  endif
+	  if get(info, 'warning', 0)
+	    call add(msgs, ' W' . info['warning'])
+	  endif
+	  return join(msgs, ' ') . ' ' . get(g:, 'coc_status', '')
+	endfunction
   function! StatusLine(current, width)
     let l:s = ''
     if a:current
@@ -299,7 +423,7 @@ nnoremap <silent> t :CocCommand explorer<CR>
     endif
     let l:s .= ' %f%h%w%m%r '
     if a:current
-      let l:s .= crystalline#right_sep('', 'Fill') . ' %{fugitive#head()}'
+      let l:s .= crystalline#right_sep('', 'Fill') . ' %{fugitive#head()} %{StatusDiagnostic()} %{g:codelf_status}'
     endif
     let l:s .= '%='
     if a:current
