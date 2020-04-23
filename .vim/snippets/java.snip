@@ -1,0 +1,287 @@
+snippet class
+    class ${1} ${2:#:extends_or_implements} {
+        ${0:TARGET}
+    }
+
+snippet interface
+    interface ${1} ${2:#:extends} {
+        ${0:TARGET}
+    }
+
+snippet method
+    ${1:void} ${2:#:method}(${3}) ${4:throws} {
+        ${0:TARGET}
+    }
+
+snippet enum
+abbr enum {}
+    enum ${1:#:name} {
+        ${0:TARGET}
+    }
+
+snippet Sca
+    Scanner ${1:input}=new Scanner(System.in);${0:TARGET}
+
+snippet co
+    public ${1:Name}() {
+
+    }${0:TARGET}
+
+snippet co1
+    public ${1:Name}(${2:String} ${3:name}) {
+	this.$3 = $3;
+    }${0:TARGET}
+
+snippet co2
+    public ${1:Name}(${2:String} ${3:name} , ${4:String} ${5:name}) {
+	this.$3 = $3;
+	this.$5 = $5;
+    }${0:TARGET}
+
+snippet co3
+    public ${1:Name}(${2:String} ${3:name} , ${4:String} ${5:name} , ${6:String} ${7:name}) {
+	this.$3 = $3;
+	this.$5 = $5;
+	this.$7 = $7;
+    }${0:TARGET}
+
+snippet co4
+    public ${1:Name}(${2:String} ${3:name} , ${4:String} ${5:name} , ${6:String} ${7:name} , ${8:String} ${9:name}) {
+	this.$3 = $3;
+	this.$5 = $5;
+	this.$7 = $7;
+	this.$9 = $9;
+    }${0:TARGET}
+
+snippet co5
+    public ${1:Name}(${2:String} ${3:name} , ${4:String} ${5:name} , ${6:String} ${7:name} , ${8:String} ${9:name} , ${10:String} ${11:name}) {
+	this.$3 = $3;
+	this.$5 = $5;
+	this.$7 = $7;
+	this.$9 = $9;
+	this.$11 = $11;
+    }${0:TARGET}
+
+snippet co6
+    public ${1:Name}(${2:String} ${3:name} , ${4:String} ${5:name} , ${6:String} ${7:name} , ${8:String} ${9:name} , ${10:String} ${11:name} , ${12:String} ${13:name}) {
+	this.$3 = $3;
+	this.$5 = $5;
+	this.$7 = $7;
+	this.$9 = $9;
+	this.$11 = $11;
+	this.$13 = $13;
+    }${0:TARGET}
+
+snippet co7
+    public ${1:Name}(${2:String} ${3:name} , ${4:String} ${5:name} , ${6:String} ${7:name} , ${8:String} ${9:name} , ${10:String} ${1:name } , ${12:String} ${1:name } , ${14:String} ${1:name }) {
+	this.$3 = $3;
+	this.$5 = $5;
+	this.$7 = $7;
+	this.$9 = $9;
+	this.$11 = $11;
+	this.$13 = $13;
+	this.$15 = $15;
+    }${0:TARGET}
+
+snippet co8
+    public ${1:Name}(${2:String} ${3:name} , ${4:String} ${5:name} , ${6:String} ${7:name} , ${8:String} ${9:name} , ${10:String} ${11:name} , ${12:String} ${13:name} , ${14:String} ${15:name} , ${16:String} ${17:name}) {
+	this.$3 = $3;
+	this.$5 = $5;
+    this.$7 = $7;
+	this.$9 = $9;
+	this.$11 = $11;
+	this.$13 = $13;
+	this.$15 = $15;
+	this.$17 = $17;
+    }${0:TARGET}
+
+snippet co9
+    public ${1:Name}(${2:String} ${3:name} , ${4:String} ${5:name} , ${6:String} ${7:name} , ${8:String} ${9:name} , ${10:String} ${11:name} , ${12:String} ${13:name} , ${14:String} ${15:name} , ${16:String} ${17:name} , ${18:String} ${19:name}) {
+	this.$3 = $3;
+    this.$5 = $5;
+	this.$7 = $7;
+	this.$9 = $9;
+	this.$11 = $11;
+	this.$13 = $13;
+	this.$15 = $15;
+	this.$17 = $17;
+	this.$19 = $19;
+    }${0:TARGET}
+
+snippet set
+    public void set${1:Name}(${2:String} $1) {
+    this.$1 = $1;
+    }${0:TARGET}
+
+snippet get
+    public ${1:String} get${2:name}() {
+    return $2;
+    }${0:TARGET}
+
+snippet setget
+    public void set${1:Name}(${2:String} $1) {
+    this.$1 = $1;
+    }
+    public $2 get$1() {
+    return $1;
+    }${0:TARGET}
+
+snippet sm
+    public static ${1:void} ${2:methodName}(${3}) {
+	${4}
+    }${0:TARGET}
+
+snippet im
+    public ${1:void} ${2:methodName}(${3}) {
+	${4}
+    }${0:TARGET}
+
+snippet const
+    static public final ${1:#:type} ${2:#:var} = ${3};${4}
+
+snippet const_string
+    static public final String ${1:var} = "${2}";${4}
+
+snippet final
+    public final ${1:#:type} ${2:#:var} = ${3};
+
+snippet assert
+    assert ${1:#:test} : ${2:#:Failure message};${3}
+
+snippet if
+    if (${1}) {
+        ${2:TARGET}
+    }
+
+snippet else
+    else {
+        ${1:TARGET}
+    }
+
+snippet elif
+alias elseif
+    else if (${1}) {
+        ${2:TARGET}
+    }
+
+snippet while
+    while (${1}) {
+        ${2:TARGET}
+    }
+
+snippet for
+    for (${1}; ${2}; ${3}) {
+        ${4:TARGET}
+    }
+
+snippet foreach
+alias   fore
+    for (${1} : ${2}) {
+        ${3:TARGET}
+    }
+
+snippet switch
+    switch (${1}) {
+        ${2:TARGET}
+    }
+
+snippet case
+    case ${1}:
+        ${2:TARGET}
+    ${0}
+
+snippet try
+    try {
+        ${0:TARGET}
+    } catch (${1:Exception} ${2:e}) {
+        ${3:e.printStackTrace();}
+    }
+
+snippet try_resources
+    try (${1:#:Resources}) {
+        ${0:TARGET}
+    } catch (${2:Exception} ${3:e}) {
+        ${4:e.printStackTrace();}
+    }
+
+snippet try_finally
+    try {
+        ${0:TARGET}
+    } catch (${1:Exception} ${2:e}) {
+        ${3:e.printStackTrace();}
+    } finally {
+        ${4}
+    }
+
+snippet catch
+    catch (${1:Exception} ${2:e}) {
+        ${0:e.printStackTrace();}
+    }
+
+snippet finally
+    finally {
+        ${0:TARGET}
+    }
+
+snippet sy
+options word
+    synchronized
+
+snippet testclass
+alias   tc
+options head
+    public class ${1} extends ${2:TestCase} {
+        ${0:TARGET}
+    }
+
+snippet test
+options head
+    public void test${1:#:Name}() throws Exception {
+        ${0:TARGET}
+    }
+snippet ju
+    java.util.
+
+snippet ji
+    java.io.
+
+snippet jb
+    java.beans.
+
+snippet jn
+    java.net
+
+snippet jm
+    java.math.
+
+snippet main
+    class `expand('%:p:t:r')` {
+        public static void main(String args[]) {
+            ${0:#:body}
+        }
+    }
+
+snippet println
+options word
+    System.out.println(${1});
+
+snippet print
+options word
+    System.out.print(${1});
+
+snippet format
+options word
+    System.out.format(${1});
+
+snippet comment
+    /**
+     * ${0:TARGET}
+     */
+
+snippet     helloworld
+options     head
+  public class ${1:Hello} {
+    static public void main(String args[]) {
+      System.out.println("Hello, world!");
+    }
+  }
