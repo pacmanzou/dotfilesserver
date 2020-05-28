@@ -1,20 +1,12 @@
 {
-  "coc.preferences.extensionUpdateCheck": "weekly",
-  "suggest.enablePreview": true,
-  "suggest.floatEnable": true,
   "python.jediEnabled": false,
   "python.formatting.provider": "yapf",
   "python.formatting.yapfArgs": [
     "--style",
     "{SPACES_AROUND_POWER_OPERATOR: True, SPACES_BEFORE_COMMENT: 1}"
   ],
-  "javascript.referencesCodeLens.enable": true,
-  "javascript.showUnused": true,
-  "javascript.suggest.names": true,
-  "javascript.suggestionActions.enabled": true,
-  "explorer.file.tabCD": false,
-  "coc.preferences.extensionUpdateCheck": "daily",
-  "suggest.enablePreview": true,
+  "coc.preferences.extensionUpdateCheck": "weekly",
+  "suggest.enablePreview": false,
   "suggest.floatEnable": true,
   "explorer.file.tabCD": false,
   "explorer.previewAction.onHover": false,
