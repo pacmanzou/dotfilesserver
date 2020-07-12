@@ -44,7 +44,51 @@
     "q": "quit",
     "?": "help"
   },
+  "leetcode.language": "java",
+  "yank.priority": -20,
+  "pairs.enableCharacters": ["(", "[", "{", "'", "\"", "`"],
 
+  "javascript.referencesCodeLens.enable": true,
+  "javascript.showUnused": true,
+  "javascript.suggest.names": true,
+  "javascript.suggestionActions.enabled": true,
+  "snippets.priority": -10,
+  "snippets.ultisnips.enable": true,
+  "snippets.ultisnips.usePythonx": true,
+  "snippets.userSnippetsDirectory": "~/.config/nvim/ultisnips",
+  "snippets.snipmate.enable": false,
+  "prettier.eslintIntegration": true,
+  "prettier.tslintIntegration": true,
+  "prettier.stylelintIntegration": true,
+  "prettier.statusItemText": "",
+  "git.signOffset": 99,
+  "git.addedSign.hlGroup": "GitAdd",
+  "git.addGBlameToVirtualText": true,
+  "git.enableGlobalStatus": true,
+  "git.changeRemovedSign.hlGroup": "GitDeleteTopAndBottom",
+  "git.changedSign.hlGroup": "GitModify",
+  "git.enableGutters": true,
+  "git.removedSign.hlGroup": "GitDeleteBottom",
+  "git.topRemovedSign.hlGroup": "GitDeleteTop",
+  "git.changedSign.text": "~~",
+  "git.changeRemovedSign.text": "≃≃",
+  "git.addedSign.text": "++",
+  "git.removedSign.text": "--",
+  "diagnostic-languageserver.filetypes": {
+    "sh": "shellcheck"
+  },
+  "list.source.grep.defaultArgs": ["-smartcase", "-regex"],
+  "list.insertMappings": {
+    "<C-c>": "do:exit",
+    "<C-j>": "do:next",
+    "<C-k>": "do:previous",
+    "<C-f>": "do:toggle"
+  },
+  "list.normalMappings": {
+    "<C-c>": "do:exit",
+    "<C-f>": "do:toggle"
+  },
+  "list.previewSplitRight": false,
   "languageserver": {
     "golang": {
       "command": "gopls",

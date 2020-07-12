@@ -71,31 +71,13 @@ function! ClearHighlightLines()
     endif
     let b:myhllines = {}
 endfunction
-nnoremap <silent> <Space>l :call ToggleHighlightCurrentLine()<CR>
-nnoremap <silent> <Space>L :call ClearHighlightLines()<CR>
+nnoremap <silent> <Space>i :call ToggleHighlightCurrentLine()<CR>
+nnoremap <silent> <Space>d :call ClearHighlightLines()<CR>
 "}}}
 " ====================================================================
 " set{{{
 let mapleader=","
 set history=10000
-set suffixes=.bak,~,.o,.h,.info,.swp,.obj,.pyc,.pyo,.egg-info,.class
-set wildignore=*.o,*.obj,*~,*.exe,*.a,*.pdb,*.lib "stuff to ignore when tab completing
-set wildignore+=__pycache__,.stversions,*.spl,*.out,%*
-set wildignore+=*.so,*.dll,*.swp,*.egg,*.jar,*.class,*.pyc,*.pyo,*.bin,*.dex
-set wildignore+=*.zip,*.7z,*.rar,*.gz,*.tar,*.gzip,*.bz2,*.tgz,*.xz
-set wildignore+=*DS_Store*,*.ipch
-set wildignore+=*.gem
-set wildignore+=*.png,*.jpg,*.gif,*.bmp,*.tga,*.pcx,*.ppm,*.img,*.iso
-set wildignore+=*.so,*.swp,*.zip,*/.Trash/**,*.pdf,*.dmg,*/.rbenv/**
-set wildignore+=*/.nx/**,*.app,*.git,.git
-set wildignore+=*.wav,*.mp3,*.ogg,*.pcm
-set wildignore+=*.mht,*.suo,*.sdf,*.jnlp
-set wildignore+=*.chm,*.epub,*.pdf,*.mobi,*.ttf
-set wildignore+=*.mp4,*.avi,*.flv,*.mov,*.mkv,*.swf,*.swc
-set wildignore+=*.ppt,*.pptx,*.docx,*.xlt,*.xls,*.xlsx,*.odt,*.wps
-set wildignore+=*.msi,*.crx,*.deb,*.vfd,*.apk,*.ipa,*.bin,*.msu
-set wildignore+=*.gba,*.sfc,*.078,*.nds,*.smd,*.smc
-set wildignore+=*.linux2,*.win32,*.darwin,*.freebsd,*.linux,*.android
 set wildmenu
 set noshowcmd
 set noshowmatch
@@ -148,9 +130,11 @@ nnoremap / mr/
 nnoremap Y y$
 nnoremap > >>
 nnoremap < <<
-nnoremap <silent> <Space>w :set hlsearch<CR>
-nnoremap <silent> <Space>W :set nohlsearch<CR>
+nnoremap <silent> <Esc> :set nohlsearch<CR>
 nnoremap <silent> <Backspace><Space> :g/^\s*$/d<CR>
+nnoremap <silent> yn :let @+ = expand('%')<CR>
+nnoremap <silent> yp :let @+ = expand('%:p')<CR>
+nnoremap <silent> yd :let @+=getcwd()<CR>
 nnoremap <silent> gh K
 "}}}
 " ====================================================================
@@ -162,7 +146,7 @@ imap <C-E> <End>
 imap <C-R> <Nop>
 imap <C-V> <Nop>
 imap <C-Y> <Nop>
-imap <C-O> <Left><Esc>o
+imap <C-O> <Return><UP><END><Return>
 imap <C-C> <Esc>
 imap <C-K> <Nop>
 imap <C-J> <Nop>
@@ -170,6 +154,8 @@ imap <C-Z> <Nop>
 "}}}
 " ====================================================================
 " cmd{{{
+cnoreabbrev todark set background=dark
+cnoreabbrev tolight set background=light
 cnoremap <C-A> <Home>
 cnoremap <C-S> <Nop>
 cnoremap <C-E> <End>
@@ -201,6 +187,7 @@ map <C-B> <Nop>
 map <C-Z> <Nop>
 map <C-F> <Nop>
 map <C-Y> <Nop>
+map <C-O> <Nop>
 "}}}
 " ====================================================================
 " fold{{{
@@ -299,31 +286,44 @@ Plug 'rbong/vim-crystalline'
 Plug 'yggdroot/indentline' " comfortable and obvious code indentline
 Plug 'tpope/vim-surround' " '',()[]{}
 Plug 'tpope/vim-commentary' " annotation code
-Plug 'jiangmiao/auto-pairs' " auto pairs
-Plug 'machakann/vim-highlightedyank' " highlight yank
-Plug 'terryma/vim-multiple-cursors' " multiple currors
+Plug 'RRethy/vim-illuminate' " underline
+Plug 'tpope/vim-capslock' " <C-G>c,gC
+Plug 'tpope/vim-repeat' " super .
+Plug 'junegunn/vim-easy-align', {'on': '<Plug>(EasyAlign)'} " align
+Plug 'chrisbra/Colorizer', {'on': 'ColorHighlight'} " show colors
+Plug 'lambdalisue/suda.vim' " sudo write
+Plug 'mg979/vim-visual-multi' " multiple currors
 Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'AndrewRadev/splitjoin.vim' "gJ,gS
 Plug 'mattn/emmet-vim', {'for': ['html', 'css', 'php', 'less']}
-Plug 'voldikss/vim-codelf'
-Plug 'Shougo/neosnippet.vim'
 Plug 'luochen1990/rainbow' " obvious pairs
 Plug 'tmhedberg/SimpylFold',{'for': 'python'}
 Plug 'Vimjas/vim-python-pep8-indent',{'for': 'python'}
-Plug 'jelera/vim-javascript-syntax', {'for': [ 'javascript', 'html', 'css', 'php', 'less' ]}
-Plug 'wellle/tmux-complete.vim' " tmux source for coc
+Plug 'liuchengxu/vista.vim'
+Plug 'uiiaoo/java-syntax.vim'
+Plug 'pangloss/vim-javascript', { 'for': ['html', 'javascript'] }
+Plug 'mattn/emmet-vim', {'for': ['html', 'xml']}
+Plug 'alvan/vim-closetag', {'for': ['html', 'xml']}
+" Plug 'fatih/vim-go' , { 'for': 'go', 'tag': '*'}
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'FelikZ/ctrlp-py-matcher'
 call plug#end()
 colorscheme gruvbox
+let g:gruvbox_italic = 1
 set background=dark
 highlight Normal guibg=NONE ctermbg=None
+highlight! link SignColumn LineNr
+set t_Co=256
 " set termguicolors
 "}}}
 " ====================================================================
-" json{{{
+" suda.vim{{{
+cnoreabbrev suda w suda://%
+"}}}
+" ====================================================================
+" autocmd{{{
 autocmd BufNewFile,BufRead *.json set filetype=json
 augroup json_autocmd
   autocmd!
@@ -331,6 +331,30 @@ augroup json_autocmd
   autocmd FileType json setlocal formatoptions=tcq2l
   autocmd FileType json setlocal foldmethod=syntax
 augroup END
+auto FileType python,shell,coffee set commentstring=#\ %s
+autocmd FileType java,c,cpp set commentstring=//\ %s
+autocmd FileType markdown,md setlocal commentstring=<!--\ %s-->
+"}}}
+" ====================================================================
+" vim-easy-align{{{
+vmap <Space>e <Plug>(EasyAlign)
+"}}}
+" ====================================================================
+" vim-illuminate{{{
+let g:Illuminate_delay = 1000
+"}}}
+" ====================================================================
+" multi{{{
+let g:VM_theme = 'spacegray'
+let g:VM_maps = {}
+let g:VM_maps['Find Under'] = '<Space>J'
+let g:VM_maps['Find Subword Under'] = '<Space>J'
+let g:VM_maps['Find Next'] = 'j'
+let g:VM_maps['Find Prev'] = 'k'
+let g:VM_maps['Remove Region'] = 'q'
+let g:VM_maps['Skip Region'] = 's'
+let g:VM_maps["Undo"] = 'u'
+let g:VM_maps["Redo"] = '<C-r>'
 "}}}
 " ====================================================================
 " SimpylFold{{{
@@ -338,16 +362,6 @@ augroup END
 let g:SimpylFold_docstring_preview = 1
 let g:python_highlight_all = 1
 " let g:python_slow_sync = 0
-"}}}
-" ====================================================================
-" neosnippet{{{
-imap <C-J> <Plug>(neosnippet_expand_or_jump)
-smap <C-J> <Plug>(neosnippet_expand_or_jump)
-xmap <C-J> <Plug>(neosnippet_expand_target)
-set conceallevel=2
-set concealcursor=niv
-let g:neosnippet#enable_snipmate_compatibility = 1
-let g:neosnippet#snippets_directory='~/.config/nvim/snippets'
 "}}}
 " ====================================================================
 " rainbow{{{
@@ -361,12 +375,8 @@ let g:rainbow_active = 1
 "}}}
 " ====================================================================
 " emmet-vim"{{{
-imap <C-K> <C-Z>,
+imap <C-L> <C-Z>,
 let g:user_emmet_leader_key='<C-Z>'
-"}}}
-" ====================================================================
-" codelf{{{
-imap <silent> <C-L> <Esc>:call codelf#start()<CR>
 "}}}
 " ====================================================================
 " indentline{{{
@@ -380,6 +390,23 @@ let g:indentLine_bufTypeExclude = ['help', 'terminal', 'nofile']
 let g:coc_global_extensions=[
             \'coc-prettier',
             \'coc-java',
+            \'coc-snippets',
+            \'coc-go',
+            \'coc-diagnostic',
+            \'coc-docker',
+            \'coc-gitignore',
+            \'coc-pairs',
+            \'coc-yank',
+            \'coc-git',
+            \'coc-leetcode',
+            \'coc-lists',
+            \'coc-vetur',
+            \'coc-calc',
+            \'coc-cssmodules',
+            \'coc-markdownlint',
+            \'coc-clangd',
+            \'coc-translator',
+            \'coc-tsserver'
             \'coc-explorer',
             \'coc-phpls',
             \'coc-python',
@@ -388,16 +415,62 @@ let g:coc_global_extensions=[
             \'coc-json',
             \'coc-css',
             \]
+
+let g:coc_snippet_next = '<c-j>'
+let g:coc_snippet_prev = '<c-k>'
+vmap <C-j> <Plug>(coc-snippets-select)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
+
+nmap cn <Plug>(coc-rename)
+
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> <C-N> <Plug>(coc-diagnostic-next-error)
-nmap <silent> <C-P> <Plug>(coc-diagnostic-prev-error)
-nmap <silent> <space>f <Plug>(coc-format)
-vmap <silent> <space>f <Plug>(coc-format-selected)
-nmap cn <Plug>(coc-rename)
+nmap <silent> ]c <Plug>(coc-diagnostic-next-error)
+nmap <silent> [c <Plug>(coc-diagnostic-prev-error)
+
+nmap <silent> <C-F> <Plug>(coc-format)
+vmap <silent> <C-F> <Plug>(coc-format-selected)
+
+nmap <silent> <Leader>j <Plug>(coc-git-nextchunk)
+nmap <silent> <Leader>k <Plug>(coc-git-prevchunk)
+
+nmap <silent> <space>t <Plug>(coc-translator-e)
+vmap <silent> <space>t <Plug>(coc-translator-ev)
+
+nmap <Space>ca <Plug>(coc-calc-result-append)
+nmap <Space>cr <Plug>(coc-calc-result-replace)
+
 nnoremap <silent> t :CocCommand explorer<CR>
+
+nnoremap <silent> <Space>y :CocList --normal yank<CR>
+nnoremap <silent> <Space>f :CocList files<CR>
+nnoremap <silent> <Space>b :CocList buffers<CR>
+nnoremap <silent> <Space>l :CocList lines<CR>
+nnoremap <silent> <Space>m :CocList marks<CR>
+nnoremap <silent> <Space>h :CocList mru<CR>
+nnoremap <silent> <Space>L :CocList<CR>
+nnoremap <silent> <Space>C :CocCommand<CR>
+nnoremap <silent> <Leader>a :CocCommand git.chunkStage<CR>
+nnoremap <silent> <Leader>u :CocCommand git.chunkUndo<CR>
+nnoremap <silent> <Leader>p :CocCommand git.chunkInfo<CR>
+" vim-fugitive
+nnoremap <silent> <Leader>b :Gblame<CR>
+nnoremap <silent> <Leader>s :Gstatus<CR>
+nnoremap <silent> <Leader>c :Gcommit<CR>
+"}}}
+" ====================================================================
+" vista.vim{{{
+let g:vista_sidebar_position = 'vertical botright'
+let g:vista_sidebar_width = 35
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+let g:vista_default_executive = 'ctags'
+let g:vista#renderer#enable_icon = 1
+let g:vista#renderer#icons = {
+\   "function": "\uf794",
+\   "variable": "\uf71b",
+\  }
 "}}}
 " ====================================================================
 " vim-crystalline{{{
@@ -452,60 +525,6 @@ nnoremap <silent> t :CocCommand explorer<CR>
 nmap s ysiw
 nmap S yss
 vmap s S
-"}}}
-" ====================================================================
-" vim-multiple-cursors{{{
-let g:multi_cursor_use_default_mapping = 0
-let g:multi_cursor_start_word_key = '<Space>m'
-let g:multi_cursor_select_all_word_key = 'g<Space>m'
-let g:multi_cursor_start_key = '<Space>M'
-let g:multi_cursor_select_all_key = 'g<Space>M'
-let g:multi_cursor_next_key = 'n'
-let g:multi_cursor_prev_key = 'p'
-let g:multi_cursor_skip_key = 's'
-let g:multi_cursor_quit_key = '<Esc>'
-"}}}
-" ====================================================================
-" vim-commentary{{{
-auto FileType python,shell,coffee set commentstring=#\ %s
-autocmd FileType java,c,cpp set commentstring=//\ %s
-map gc <Nop>
-map  <Space>c  <Plug>Commentary
-nmap <Space>cc <Plug>CommentaryLine
-"}}}
-" ====================================================================
-" auto-pairs{{{
-nmap <Space>p <M-p>
-let g:AutoPairsFlyMode = 0
-"}}}
-" ====================================================================
-" vim-fugitive{{{
-let g:fugitive_no_maps = 1
-nnoremap <silent> <Leader>s H:Gstatus<CR>
-nnoremap <silent> <Leader>l :tabnew<CR>:GlLog<CR>
-nnoremap <silent> <Leader>c H:Gcommit<CR>
-nnoremap <silent> <Leader>bl :Gblame<CR>
-vnoremap <silent> <Leader>bl :Gblame<CR><C-W>H
-nnoremap <silent> <Leader>push H:terminal git push<CR>
-nnoremap <silent> <Leader>pull H:terminal git pull<CR>
-"}}}
-" ====================================================================
-" vim-gitgutter{{{
-let g:gitgutter_signs = 1
-let g:gitgutter_async = 1
-let g:gitgutter_max_signs = 2048
-let g:gitgutter_map_keys = 0
-let g:gitgutter_override_sign_column_highlight = 1
-let g:gitgutter_preview_win_floating = 0
-let g:gitgutter_sign_added = '++'
-let g:gitgutter_sign_modified = '+-'
-let g:gitgutter_sign_removed = '--'
-autocmd BufWritePost * GitGutter
-nnoremap <silent> <Leader>pr :GitGutterPreviewHunk<CR>
-nnoremap <silent> <Leader>f :GitGutterFold<CR>
-nnoremap <silent> <Leader>k :GitGutterPrevHunk<CR>
-nnoremap <silent> <Leader>j :GitGutterNextHunk<CR>
-nmap <silent> <Leader>a <Plug>(GitGutterStageHunk)
 "}}}
 " ====================================================================
 " ctrlp{{{
@@ -597,7 +616,6 @@ let g:ctrlp_prompt_mappings = {
 "}}}
 " ====================================================================
 " undotree{{{
-nnoremap <Space>u :UndotreeToggle<CR>
 if empty(glob('~/.cache/tmp/backup'))
 silent !mkdir -p ~/.cache/tmp/backup
 endif
