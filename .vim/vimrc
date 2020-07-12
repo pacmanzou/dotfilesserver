@@ -71,8 +71,8 @@ function! ClearHighlightLines()
     endif
     let b:myhllines = {}
 endfunction
-nnoremap <silent> <Space>i :call ToggleHighlightCurrentLine()<CR>
-nnoremap <silent> <Space>d :call ClearHighlightLines()<CR>
+noremap <silent> <Space>i :call ToggleHighlightCurrentLine()<CR>
+noremap <silent> <Space>d :call ClearHighlightLines()<CR>
 "}}}
 " ====================================================================
 " set{{{
@@ -88,7 +88,8 @@ set smartcase
 set smartindent
 set smarttab
 let &t_ut=''
-set encoding=utf-8
+let &termencoding=&encoding
+set fileencodings=utf-8,gbk,ucs-bom,cp936
 set report=0
 set ruler
 set fillchars=vert:\ ,stl:\ ,stlnc:\
@@ -99,6 +100,7 @@ set terse
 set number
 set relativenumber
 set numberwidth=1
+set cursorline
 set noeb
 set wrap
 set autoread
@@ -132,9 +134,6 @@ nnoremap > >>
 nnoremap < <<
 nnoremap <silent> <Esc> :set nohlsearch<CR>
 nnoremap <silent> <Backspace><Space> :g/^\s*$/d<CR>
-nnoremap <silent> yn :let @+ = expand('%')<CR>
-nnoremap <silent> yp :let @+ = expand('%:p')<CR>
-nnoremap <silent> yd :let @+=getcwd()<CR>
 nnoremap <silent> gh K
 "}}}
 " ====================================================================
@@ -156,6 +155,8 @@ imap <C-Z> <Nop>
 " cmd{{{
 cnoreabbrev todark set background=dark
 cnoreabbrev tolight set background=light
+cnoreabbrev hls set hlsearch
+cnoremap <C-D> <Nop>
 cnoremap <C-A> <Home>
 cnoremap <C-S> <Nop>
 cnoremap <C-E> <End>
@@ -180,6 +181,7 @@ map B <Nop>
 map <Space> <Nop>
 map K <Nop>
 map J <Nop>
+map T <Nop>
 map Z <Nop>
 map ZZ <Nop>
 map <C-]> <Nop>
@@ -254,6 +256,8 @@ nnoremap <silent> <C-T> <C-W>T
 " cursor move{{{
 noremap <C-E> $
 noremap <C-A> ^
+noremap <C-N> <C-I>
+noremap <C-P> <C-O>
 noremap e E
 noremap w W
 noremap E gE
@@ -291,36 +295,32 @@ Plug 'tpope/vim-capslock' " <C-G>c,gC
 Plug 'tpope/vim-repeat' " super .
 Plug 'junegunn/vim-easy-align', {'on': '<Plug>(EasyAlign)'} " align
 Plug 'chrisbra/Colorizer', {'on': 'ColorHighlight'} " show colors
-Plug 'lambdalisue/suda.vim' " sudo write
 Plug 'mg979/vim-visual-multi' " multiple currors
 Plug 'tpope/vim-fugitive'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'AndrewRadev/splitjoin.vim' "gJ,gS
 Plug 'mattn/emmet-vim', {'for': ['html', 'css', 'php', 'less']}
+Plug 'majutsushi/tagbar'
 Plug 'luochen1990/rainbow' " obvious pairs
 Plug 'tmhedberg/SimpylFold',{'for': 'python'}
 Plug 'Vimjas/vim-python-pep8-indent',{'for': 'python'}
-Plug 'liuchengxu/vista.vim'
 Plug 'uiiaoo/java-syntax.vim'
 Plug 'pangloss/vim-javascript', { 'for': ['html', 'javascript'] }
 Plug 'mattn/emmet-vim', {'for': ['html', 'xml']}
 Plug 'alvan/vim-closetag', {'for': ['html', 'xml']}
 " Plug 'fatih/vim-go' , { 'for': 'go', 'tag': '*'}
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'FelikZ/ctrlp-py-matcher'
 call plug#end()
 colorscheme gruvbox
 let g:gruvbox_italic = 1
 set background=dark
 highlight Normal guibg=NONE ctermbg=None
 highlight! link SignColumn LineNr
+highlight InSearch cterm=bold gui=bold
+highlight Search cterm=bold gui=bold
+highlight! link to GruvboxYellowBold
 set t_Co=256
 " set termguicolors
-"}}}
-" ====================================================================
-" suda.vim{{{
-cnoreabbrev suda w suda://%
 "}}}
 " ====================================================================
 " autocmd{{{
@@ -340,6 +340,10 @@ autocmd FileType markdown,md setlocal commentstring=<!--\ %s-->
 vmap <Space>e <Plug>(EasyAlign)
 "}}}
 " ====================================================================
+" ctags{{{
+nnoremap <silent> t :TagbarToggle<cr>
+"}}}
+" ====================================================================
 " vim-illuminate{{{
 let g:Illuminate_delay = 1000
 "}}}
@@ -347,8 +351,8 @@ let g:Illuminate_delay = 1000
 " multi{{{
 let g:VM_theme = 'spacegray'
 let g:VM_maps = {}
-let g:VM_maps['Find Under'] = '<Space>J'
-let g:VM_maps['Find Subword Under'] = '<Space>J'
+let g:VM_maps['Find Under'] = '<Space>j'
+let g:VM_maps['Find Subword Under'] = '<Space>j'
 let g:VM_maps['Find Next'] = 'j'
 let g:VM_maps['Find Prev'] = 'k'
 let g:VM_maps['Remove Region'] = 'q'
@@ -406,7 +410,6 @@ let g:coc_global_extensions=[
             \'coc-markdownlint',
             \'coc-clangd',
             \'coc-translator',
-            \'coc-tsserver'
             \'coc-explorer',
             \'coc-phpls',
             \'coc-python',
@@ -421,7 +424,8 @@ let g:coc_snippet_prev = '<c-k>'
 vmap <C-j> <Plug>(coc-snippets-select)
 imap <C-j> <Plug>(coc-snippets-expand-jump)
 
-nmap cn <Plug>(coc-rename)
+let g:coc_disable_startup_warning = 1
+nmap <Space>cn <Plug>(coc-rename)
 
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gr <Plug>(coc-references)
@@ -430,19 +434,19 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> ]c <Plug>(coc-diagnostic-next-error)
 nmap <silent> [c <Plug>(coc-diagnostic-prev-error)
 
-nmap <silent> <C-F> <Plug>(coc-format)
-vmap <silent> <C-F> <Plug>(coc-format-selected)
+nmap <silent> <Space>cf <Plug>(coc-format)
+vmap <silent> <Space>cf <Plug>(coc-format-selected)
 
 nmap <silent> <Leader>j <Plug>(coc-git-nextchunk)
 nmap <silent> <Leader>k <Plug>(coc-git-prevchunk)
 
-nmap <silent> <space>t <Plug>(coc-translator-e)
-vmap <silent> <space>t <Plug>(coc-translator-ev)
+nmap <silent> <space>ct <Plug>(coc-translator-e)
+vmap <silent> <space>ct <Plug>(coc-translator-ev)
 
 nmap <Space>ca <Plug>(coc-calc-result-append)
 nmap <Space>cr <Plug>(coc-calc-result-replace)
 
-nnoremap <silent> t :CocCommand explorer<CR>
+nnoremap <silent> <C-G> :CocCommand explorer<CR>
 
 nnoremap <silent> <Space>y :CocList --normal yank<CR>
 nnoremap <silent> <Space>f :CocList files<CR>
@@ -461,18 +465,6 @@ nnoremap <silent> <Leader>s :Gstatus<CR>
 nnoremap <silent> <Leader>c :Gcommit<CR>
 "}}}
 " ====================================================================
-" vista.vim{{{
-let g:vista_sidebar_position = 'vertical botright'
-let g:vista_sidebar_width = 35
-let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
-let g:vista_default_executive = 'ctags'
-let g:vista#renderer#enable_icon = 1
-let g:vista#renderer#icons = {
-\   "function": "\uf794",
-\   "variable": "\uf71b",
-\  }
-"}}}
-" ====================================================================
 " vim-crystalline{{{
 	function! StatusDiagnostic() abort
 	  let info = get(b:, 'coc_diagnostic_info', {})
@@ -486,6 +478,14 @@ let g:vista#renderer#icons = {
 	  endif
 	  return join(msgs, ' ') . ' ' . get(g:, 'coc_status', '')
 	endfunction
+function! LightlineGitstatusg() abort
+  let statusg = get(g:, 'coc_git_status', '')
+  return  statusg
+endfunction
+function! LightlineGitstatusb() abort
+  let statusb = get(b:, 'coc_git_status', '')
+  return  statusb
+endfunction
   function! StatusLine(current, width)
     let l:s = ''
     if a:current
@@ -495,15 +495,15 @@ let g:vista#renderer#icons = {
     endif
     let l:s .= ' %f%h%w%m%r '
     if a:current
-      let l:s .= crystalline#right_sep('', 'Fill') . ' %{fugitive#head()} %{StatusDiagnostic()} %{g:codelf_status}'
+      let l:s .= crystalline#right_sep('', 'Fill') . '%{(LightlineGitstatusb())} %{StatusDiagnostic()}'
     endif
     let l:s .= '%='
     if a:current
       let l:s .= crystalline#left_sep('', 'Fill')
       let l:s .= crystalline#left_mode_sep('')
     endif
-    if a:width > 20
-      let l:s .= ' %{&ft}[%{&fenc!=#""?&fenc:&enc}][%{&ff}] %l/%L %c%V %P '
+    if a:width > 40
+      let l:s .= '%{fugitive#head()} %{&ft}[%{&fenc!=#""?&fenc:&enc}] %l/%c%V %L %P '
     else
       let l:s .= ''
     endif
@@ -527,94 +527,6 @@ nmap S yss
 vmap s S
 "}}}
 " ====================================================================
-" ctrlp{{{
-nnoremap <silent> <C-F>f :CtrlPCurFile<CR>
-nnoremap <silent> <C-F><C-F> :CtrlPCurFile<CR>
-nnoremap <silent> <C-F>h :CtrlPMRUFile<CR>
-nnoremap <silent> <C-F><C-H> :CtrlPMRUFile<CR>
-nnoremap <silent> <C-F>b :CtrlPBuffer<CR>
-nnoremap <silent> <C-F><C-B> :CtrlPBuffer<CR>
-nnoremap <silent> <C-F>w :CtrlPLine<CR>
-nnoremap <silent> <C-F><C-w> :CtrlPLine<CR>
-nnoremap <silent> <C-F>t :CtrlPBufTag<CR>
-nnoremap <silent> <C-F><C-T> :CtrlPBufTag<CR>
-nnoremap <C-Space> <Nop>
-" if executable('rg')
-"  set grepprg=rg\ --vimgrep\ --no-heading
-"  set grepformat=%f:%l:%c:%m,%f:%l:%m
-"  let g:ctrlp_user_command = 'rg %s -i --files --no-heading --max-depth 10'
-" endif
-let g:ctrlp_match_func = {'match' : 'pymatcher#PyMatch' }
-let g:ctrlp_use_caching = 1
-let dir = ['\.git', '\.hg$', '\.svn$', '\.vimundo$', '\.cache/ctrlp$',
-          \    '\.rbenv', '\.gem', 'backup', 'Documents', $TMPDIR,
-          \    'vendor']
-" let g:ctrlp_custom_ignore = {
-"       \ 'dir': '\v[\/]?(' . join(dir, '|') . ')',
-"       \ 'file': '\v(\.exe|\.so|\.dll|\.DS_Store|\.db|COMMIT_EDITMSG)$'
-"       \ }
-let g:ctrlp_map = ''
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
-let g:ctrlp_by_filename = 1
-let g:ctrlp_regexp = 0
-let g:ctrlp_reuse_window = 'netrw\|help\|quickfix'
-let g:ctrlp_switch_buffer = 0
-let g:ctrlp_tabpage_position = 'ac'
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_open_multiple_files = 't'
-let g:ctrlp_clear_cache_on_exit = 1
-let g:ctrlp_follow_symlinks = 0
-let g:ctrlp_tilde_homedir = 1
-let g:ctrlp_max_depth = 40
-let g:ctrlp_max_files = 10000
-let g:ctrlp_max_history = 0
-let g:ctrlp_arg_map = 0
-let g:ctrlp_path_nolim = 0
-let g:ctrlp_mruf_max = 200
-let g:ctrlp_default_input = 0
-let g:ctrlp_lazy_update = 0
-let g:ctrlp_match_current_file = 0
-let g:ctrlp_brief_prompt = 0
-let g:ctrlp_mruf_exclude = '/tmp/.*\|/temp/.*'
-let g:ctrlp_match_window = 'bottom,order:btt,min:10,max:10,results:50'
-let g:ctrlp_prompt_mappings = {
-    \ 'PrtBS()':              ['<Bs>', '<C-H>'],
-    \ 'PrtDelete()':          [],
-    \ 'PrtDeleteWord()':      ['<C-W>'],
-    \ 'PrtClear()':           ['<C-U>'],
-    \ 'PrtSelectMove("j")':   ['<C-N>'],
-    \ 'PrtSelectMove("k")':   ['<C-P>'],
-    \ 'PrtSelectMove("t")':   [],
-    \ 'PrtSelectMove("b")':   [],
-    \ 'PrtSelectMove("u")':   [],
-    \ 'PrtSelectMove("d")':   [],
-    \ 'PrtHistory(-1)':       [],
-    \ 'PrtHistory(1)':        [],
-    \ 'AcceptSelection("e")': ['<CR>'],
-    \ 'AcceptSelection("h")': ['<C-X>'],
-    \ 'AcceptSelection("t")': ['<C-T>'],
-    \ 'AcceptSelection("v")': ['<C-V>'],
-    \ 'ToggleRegex()':        [],
-    \ 'ToggleByFname()':      [],
-    \ 'ToggleType(1)':        ['<C-J>'],
-    \ 'ToggleType(-1)':       ['<C-K>'],
-    \ 'PrtExpandDir()':       [],
-    \ 'PrtInsert("c")':       [],
-    \ 'PrtInsert()':          [],
-    \ 'PrtCurStart()':        ['<C-A>'],
-    \ 'PrtCurEnd()':          ['<C-E>'],
-    \ 'PrtCurLeft()':         ['<C-B>', '<Left>'],
-    \ 'PrtCurRight()':        ['<C-F>', '<Right>'],
-    \ 'PrtClearCache()':      ['<C-R>'],
-    \ 'PrtDeleteEnt()':       ['<C-D>'],
-    \ 'CreateNewFile()':      ['<C-I>'],
-    \ 'MarkToOpen()':         [],
-    \ 'OpenMulti()':          [],
-    \ 'PrtExit()':            ['<Esc>', '<C-C>', '<C-[>'],
-    \ }
-"}}}
-" ====================================================================
 " undotree{{{
 if empty(glob('~/.cache/tmp/backup'))
 silent !mkdir -p ~/.cache/tmp/backup
@@ -633,6 +545,6 @@ let g:undotree_SetFocusWhenToggle=1
 let g:undotree_ShortIndicators=1
 let g:undotree_WindowLayout=2
 let g:undotree_DiffpanelHeight=5
-let g:undotree_SplitWidth=19
+let g:undotree_SplitWidth=24
 "}}}
 " ============================================================================

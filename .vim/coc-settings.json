@@ -55,7 +55,7 @@
   "snippets.priority": -10,
   "snippets.ultisnips.enable": true,
   "snippets.ultisnips.usePythonx": true,
-  "snippets.userSnippetsDirectory": "~/.config/nvim/ultisnips",
+  "snippets.userSnippetsDirectory": "/root/.vim/ultisnips",
   "snippets.snipmate.enable": false,
   "prettier.eslintIntegration": true,
   "prettier.tslintIntegration": true,
