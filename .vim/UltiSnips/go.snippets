@@ -4,8 +4,27 @@ import (
 )
 endsnippet
 
+snippet tt
+var tests = []struct {
+	name string
+	expected string
+	given string
+}{
+	{"${1}", "${2}", "${3}",},
+}
+for _, tt := range tests {
+	tt := tt
+	t.Run(tt.name, func(t *testing.T){
+		actual := ${0:${VISUAL}}(tt.given)
+		if actual != tt.expected {
+				t.Errorf("$0(%s): expected %s, actual %s", tt.given, tt.expected, actual)
+		}
+
+	})
+}
+endsnippet
+
 snippet /^package/ "Package declaration" r
-// Package $1 provides ...
 package ${1:main}
 endsnippet
 
@@ -34,12 +53,6 @@ endsnippet
 
 snippet interface "Interface declaration" b
 type ${1:Interface} interface {
-	${0:${VISUAL}}
-}
-endsnippet
-
-snippet if "If statement" b
-if ${1:condition}${1/(.+)/ /}{
 	${0:${VISUAL}}
 }
 endsnippet
