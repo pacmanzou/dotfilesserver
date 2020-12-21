@@ -117,7 +117,7 @@ imap <C-k> <Esc>lC
 imap <C-a> <Esc>I
 imap <C-e> <End>
 imap <C-s> <Esc>lce
-imap <C-o> <Return><Up><End><Return>
+imap <C-o> <Esc>o
 imap <C-f> <Right>
 imap <C-b> <Left>
 imap <C-v> <nop>
@@ -201,7 +201,6 @@ Plug 'mg979/vim-visual-multi'
 Plug 'jiangmiao/auto-pairs'
 
 " git manager
-Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
 " database manager
@@ -354,6 +353,7 @@ let g:VM_Cursor_hl          = 'Visual'
 let g:VM_Mono_hl            = 'IncSearch'
 let g:VM_Extend_hl          = 'IncSearch'
 let g:VM_Insert_hl          = 'IncSearch'
+let g:VM_show_warnings      = 0
 
 nmap <Space>n <Plug>(VM-Find-Under)
 
@@ -456,10 +456,6 @@ nnoremap <silent><Leader>f :GitGutterFold<CR>
 nnoremap <silent><Leader>p :GitGutterPreviewHunk<CR>
 nnoremap <silent><Leader>k :GitGutterPrevHunk<CR>
 nnoremap <silent><Leader>j :GitGutterNextHunk<CR>
-
-nnoremap <silent><Leader>b :Gblame<CR>
-nnoremap <silent><Leader>s :Gstatus<CR>
-nnoremap <silent><Leader>c :Gcommit<CR>
 
 
 " Languages:
