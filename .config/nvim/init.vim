@@ -344,7 +344,7 @@ nmap cr  <Plug>(abolish-coerce-word)
 " VisualMulti:
 let g:VM_leader             = {'default': ',', 'visual': ',', 'buffer': ','}
 let g:VM_silent_exit        = 1
-let g:VM_show_warnings      = 1
+let g:VM_show_warnings      = 0
 let g:VM_maps               = {}
 let g:VM_maps['Find Next']  = 'n'
 let g:VM_maps['Find Prev']  = 'N'
@@ -354,7 +354,6 @@ let g:VM_Cursor_hl          = 'Visual'
 let g:VM_Mono_hl            = 'IncSearch'
 let g:VM_Extend_hl          = 'IncSearch'
 let g:VM_Insert_hl          = 'IncSearch'
-let g:VM_show_warnings      = 0
 
 nmap <Space>n <Plug>(VM-Find-Under)
 
