@@ -300,7 +300,7 @@ function! StatusLine(current, width)
         let l:s .= crystalline#left_mode_sep('')
     endif
     if a:width > 40
-        let l:s .= '%{fugitive#head()}  [%{&ft}][%{&fenc!=#""?&fenc:&enc}][%{&ff}]'
+        let l:s .= '[%{&ft}][%{&fenc!=#""?&fenc:&enc}][%{&ff}]'
     else
         let l:s .= ''
     endif
