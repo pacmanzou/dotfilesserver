@@ -1,27 +1,14 @@
 " Author: pacmanzou <zoumanjaro@gmail.com> && <pacmanzou@qq.com>
 " Github: https://github.com/pacmanzou
-" Description: Nvim config
+" Description: nvim config
 
 
 " Let:
 let &t_ut                               = ''
 let &termencoding                       = &encoding
 let mapleader                           = ","
-let g:netrw_nogx                        = 1
 let g:python_host_prog                  = '/usr/bin/python2'
 let g:python3_host_prog                 = '/usr/bin/python3'
-let g:clipboard                         = {
-            \ 'name': 'xsel_override',
-            \ 'copy': {
-            \ '+': 'xsel --input --clipboard',
-            \ '*': 'xsel --input --primary',
-            \ },
-            \ 'paste': {
-            \ '+': 'xsel --output --clipboard',
-            \ '*': 'xsel --output --primary',
-            \ },
-            \ 'cache_enabled': 0,
-            \ }
 
 
 " Set:
@@ -41,7 +28,6 @@ set guioptions-=e
 set hidden
 set history=10000
 set ignorecase
-set inccommand=split
 set incsearch
 set laststatus=2
 set lazyredraw
@@ -92,10 +78,10 @@ noremap <silent><C-j> <C-w>j
 noremap <silent><C-k> <C-w>k
 
 " windows size
-nnoremap zk <cmd>res +5<Cr>
-nnoremap zj <cmd>res -5<Cr>
-nnoremap zl <cmd>vertical resize-5<Cr>
-nnoremap zh <cmd>vertical resize+5<Cr>
+nnoremap zk :res +5<Cr>
+nnoremap zj :res -5<Cr>
+nnoremap zl :vertical resize-5<Cr>
+nnoremap zh :vertical resize+5<Cr>
 
 " windows exchange
 nnoremap <silent><C-s> <C-w>K
@@ -111,17 +97,17 @@ noremap J 5<C-e>
 noremap K 5<C-y>
 
 " tab switch
-nnoremap <Tab> <cmd>tabnext<Cr>
-nnoremap <S-Tab> <cmd>tabprevious<Cr>
+nnoremap <Tab> :tabnext<Cr>
+nnoremap <S-Tab> :tabprevious<Cr>
 
 " visual
 noremap <silent>vv <C-v>
 noremap <silent>gV ggvG$
 
 " copy
-nnoremap yn <cmd>let @+=expand('%')<Cr>
-nnoremap yp <cmd>let @+=expand('%:p')<Cr>
-nnoremap yd <cmd>let @+=getcwd()<Cr>
+nnoremap yn :let @+=expand('%')<Cr>
+nnoremap yp :let @+=expand('%:p')<Cr>
+nnoremap yd :let @+=getcwd()<Cr>
 
 " imap
 " make c-h support coc-paris for paris.enableBackspace
@@ -194,17 +180,11 @@ let g:plug_window = '-tabnew'
 
 call plug#begin('~/.config/nvim/plugged')
 
-" test
-" Plug 'datwaft/bubbly.nvim'
-" Plug 'romgrk/barbar.nvim'
-" Plug 'kyazdani42/nvim-web-devicons'
-
 " colorscheme && statusline
 Plug 'pacmanzou/gruvbox8.vim'
 Plug 'rbong/vim-crystalline'
 Plug 'luochen1990/rainbow'
 Plug 'yggdroot/indentline'
-Plug 'RRethy/vim-hexokinase',        { 'do': 'make hexokinase'}
 
 " better operation
 Plug 'pacmanzou/surround.vim'
@@ -217,34 +197,20 @@ Plug 'sbdchd/neoformat'
 Plug 'godlygeek/tabular'
 Plug 'alvan/vim-closetag'
 Plug 'tommcdo/vim-exchange'
-Plug 'voldikss/vim-skylight'
 Plug 'mg979/vim-visual-multi'
-Plug 'lpinilla/vim-codepainter'
+Plug 'jiangmiao/auto-pairs'
 
-" file manager
-Plug 'kevinhwang91/rnvimr'
-
-" tags manager
-Plug 'liuchengxu/vista.vim'
-
-" undo manager
-Plug 'mbbill/undotree'
+" git manager
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
 " database manager
 Plug 'tpope/vim-dadbod',                     { 'on': 'DBUI'}
 Plug 'kristijanhusak/vim-dadbod-ui',         { 'on': 'DBUI'}
-Plug 'kristijanhusak/vim-dadbod-completion', { 'on': 'DBUI'}
-
-" floaterm
-Plug 'voldikss/vim-floaterm'
 
 " run code
-Plug 'windwp/vim-floaterm-repl'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'skywind3000/asynctasks.vim'
-
-" completion engine
-Plug 'neoclide/coc.nvim',            { 'branch': 'release'}
 
 " debug engine
 " Plug 'puremourning/vimspector'
@@ -255,14 +221,6 @@ Plug 'fatih/vim-go',                 { 'for': ['go', 'vim-plug']}
 
 " javascript
 Plug 'pangloss/vim-javascript',      { 'for': ['javascript', 'vim-plug']}
-
-" markdown
-Plug 'plasticboy/vim-markdown',      { 'for': ['markdown', 'vim-plug']}
-Plug 'iamcco/markdown-preview.nvim',     {
-            \ 'do': ':call mkdp#util#install()',
-            \ 'for': ['markdown', 'vim-plug'],
-            \ 'on':'MarkdownPreview'
-            \ }
 
 call plug#end()
 
@@ -281,16 +239,10 @@ let g:gruvbox_plugin_hi_groups   = 0
 
 " my highlight
 function! My_highlight_show() abort
-    " let pmenu transparent
-    " set shada='20,<50,s10
-    " set wildoptions+=pum
-    " set pumblend=10
 
-    " highlight
     hi!   link           SignColumn      LineNr
     hi    WarningMsg     guifg=#FE8019   guibg=#000000
     hi    ErrorMsg       gui=bold        guifg=#ff4934   guibg=#000000
-    hi    CocErrorSign   guifg=#ff4934
     hi    IncSearch      gui=bold        guifg=#ebdbb2   guibg=#353535
     hi    StatusLine     gui=reverse     guifg=#000000   guibg=#ebdbb2
     hi    StatusLineNC   gui=reverse     guifg=#000000   guibg=#ebdbb2
@@ -300,6 +252,9 @@ function! My_highlight_show() abort
     hi    PmenuSel       gui=reverse     guibg=#ebdbb2   guifg=#353535
     hi    PmenuThumb     guibg=#353535
     hi    PmenuSbar      guibg=#202124
+    hi    GitGutterAdd   guifg=#b8bb26 guibg=#000000
+    hi    GitGutterChange guifg=#8ec07c guibg=#000000
+    hi    GitGutterDelete guifg=#fb4934 guibg=#000000
     hi    DiffAdd        guifg=#b8bb26   guibg=#000000
     hi    DiffChange     guifg=#8ec07c   guibg=#000000
     hi    DiffDelete     guifg=#fb4934   guibg=#000000
@@ -310,16 +265,6 @@ function! My_highlight_show() abort
     hi    SpellCap       gui=undercurl   guifg=#83a598   guisp=#83a598
     hi    SpellRare      gui=undercurl   guifg=#d3869b   guisp=#d3869b
     hi    SpellLocal     gui=undercurl   guifg=#8ec07c   guisp=#8ec07c
-    hi    paint0         guibg=#A3BE8C   guifg=#2E3440
-    hi    paint1         guibg=#EBCB8B   guifg=#2E3440
-    hi    paint2         guibg=#A1B6BF   guifg=#2E3440
-    hi    paint3         guibg=#BFA484   guifg=#2E3440
-    hi    paint4         guibg=#BF7A86   guifg=#2E3440
-    hi    paint5         guibg=#BB9BF2   guifg=#2E3440
-    hi    paint6         guibg=#676073   guifg=#2E3440
-    hi    paint7         guibg=#2D401C   guifg=#ffffff
-    hi    paint8         guibg=#6868BD   guifg=#2E3440
-    hi    paint9         guibg=#C2B330   guifg=#2E3440
 endfunction
 
 autocmd BufReadPre,BufEnter * call My_highlight_show()
@@ -334,33 +279,10 @@ function! Show_highlight_toggle()
     call My_highlight_show()
 endfunction
 
+nnoremap <silent><C-b> :call Show_highlight_toggle()<Cr>
+nnoremap <silent><C-f> :Neoformat<Cr>
 
 " Crystalline:
-" coc diagnostic
-function! StatusDiagnostic() abort
-    let info = get(b:, 'coc_diagnostic_info', {})
-    if empty(info) | return '' | endif
-    let msgs = []
-    if get(info, 'error', 0)
-        call add(msgs, 'e' . info['error'])
-    endif
-    if get(info, 'warning', 0)
-        call add(msgs, 'w' . info['warning'])
-    endif
-    return join(msgs)
-endfunction
-
-" coc git
-function! Gitstatusg() abort
-    let statusg = get(g:, 'coc_git_status', '')
-    return  statusg
-endfunction
-
-function! Gitstatusb() abort
-    let statusb = get(b:, 'coc_git_status', '')
-    return  statusb
-endfunction
-
 " statusline
 function! StatusLine(current, width)
     let l:s = ''
@@ -369,9 +291,9 @@ function! StatusLine(current, width)
     else
         let l:s .= '%#CrystallineInactive#'
     endif
-    let l:s .= '%{CapsLockStatusline()}%{&spell?"SPELL ":""}%{&hlsearch?"HLSEARCH ":""} [%{NearestMethodOrFunction()}]%h%w%m%r'
+    let l:s .= '%{CapsLockStatusline()}%{&spell?"SPELL ":""}%{&hlsearch?"HLSEARCH ":""} %h%w%m%r'
     if a:current
-        let l:s .= crystalline#right_sep('', 'Fill') . '  %l,%c,%L  %{StatusDiagnostic()}'
+        let l:s .= crystalline#right_sep('', 'Fill') . '  %l,%c,%L  '
     endif
     let l:s .= '%='
     if a:current
@@ -379,7 +301,7 @@ function! StatusLine(current, width)
         let l:s .= crystalline#left_mode_sep('')
     endif
     if a:width > 40
-        let l:s .= '%{Gitstatusb()} %{Gitstatusg()}  [%{&ft}][%{&fenc!=#""?&fenc:&enc}][%{&ff}]'
+        let l:s .= '%{fugitive#head()}  [%{&ft}][%{&fenc!=#""?&fenc:&enc}][%{&ff}]'
     else
         let l:s .= ''
     endif
@@ -401,10 +323,6 @@ let g:rainbow_conf               = {'guifgs': ['darkorange', 'darkgray']}
 let g:indentLine_char_list       = ['|']
 let g:indentLine_fileTypeExclude = ['json']
 let g:indentLine_bufTypeExclude  = ['help', 'terminal', 'nofile']
-
-
-" Hexokinase:
-let g:Hexokinase_highlighters = ['background']
 
 
 " BetterOperation:
@@ -436,6 +354,7 @@ let g:VM_Cursor_hl          = 'Visual'
 let g:VM_Mono_hl            = 'IncSearch'
 let g:VM_Extend_hl          = 'IncSearch'
 let g:VM_Insert_hl          = 'IncSearch'
+let g:VM_show_warnings      = 0
 
 nmap <Space>n <Plug>(VM-Find-Under)
 
@@ -444,14 +363,6 @@ xmap <Space>n <Plug>(VM-Find-Subword-Under)
 
 " CloseTag:
 let g:closetag_filenames = '*.html,*.xml,*.tmpl'
-
-
-" Codepainter:
-vnoremap <silent>p :<C-u>call codepainter#paintText(visualmode())<Cr>
-
-nnoremap <Space>e <cmd>PainterEraseLine<Cr>
-nnoremap <Space>E <cmd>PainterEraseAll<Cr>
-nnoremap <Space>P <cmd>PainterLoadMarks<Cr>
 
 
 " Neoformat:
@@ -463,7 +374,6 @@ let g:neoformat_enabled_sql = ['pg_format']
 let g:neoformat_enabled_javascript = ['jsbeautify']
 let g:neoformat_enabled_html = ['htmlbeautify']
 let g:neoformat_enabled_css = ['cssbeautify']
-let g:neoformat_enabled_markdown = ['prettier']
 let g:neoformat_enabled_c = ['astyle']
 let g:neoformat_enabled_cpp = ['astyle']
 
@@ -486,53 +396,6 @@ nmap <silent>cxc <Plug>(ExchangeClear)
 vmap <silent>x <Plug>(Exchange)
 
 
-" Skylight:
-let g:skylight_jump_command = 'split'
-let g:skylight_position = 'auto'
-let g:skylight_width = 0.9
-let g:skylight_height = 0.5
-
-nnoremap gj <cmd>SkylightJumpTo<Cr>
-nnoremap gp <cmd>SkylightPreview<Cr>
-
-
-" FileManager:
-" Rnvimr:
-let g:rnvimr_presets               = [{'width': 0.99, 'height': 0.93}]
-let g:rnvimr_enable_ex             = 1
-let g:rnvimr_enable_bw             = 1
-let g:rnvimr_draw_border           = 1
-let g:rnvimr_border_attr           = {'fg': -1, 'bg': -1}
-let g:rnvimr_vanilla               = 0
-let g:rnvimr_action                = {
-            \ '<C-t>': 'NvimEdit tabedit',
-            \ '<C-s>': 'NvimEdit split',
-            \ '<C-v>': 'NvimEdit vsplit',
-            \ 'gw': 'JumpNvimCwd',
-            \ 'ew': 'EmitRangerCwd'
-            \ }
-
-tnoremap <C-g>r <C-\><C-n><cmd>RnvimrToggle<Cr>
-
-nnoremap <C-g>r <cmd>RnvimrToggle<Cr>
-
-
-" TagsManager:
-" Vista:
-let g:vista_sidebar_position     = 'vertical botright'
-let g:vista_sidebar_width        = 35
-let g:vista_icon_indent          = ["╰─▸ ", "├─▸ "]
-let g:vista_default_executive    = 'ctags'
-let g:vista#renderer#enable_icon = 1
-let g:vista#renderer#icons       = {
-            \ "function": "\uf794",
-            \ "variable": "\uf71b",
-            \ }
-
-nnoremap <silent>T :Vista!!<Cr>
-
-
-" UndoManager:
 " Undo Backup Swap:
 set nobackup
 set swapfile
@@ -552,42 +415,9 @@ if has('persistent_undo')
 endif
 
 
-" Undotree:
-let g:undotree_DiffAutoOpen       = 1
-let g:undotree_SetFocusWhenToggle = 1
-let g:undotree_ShortIndicators    = 1
-let g:undotree_WindowLayout       = 2
-let g:undotree_DiffpanelHeight    = 10
-let g:undotree_SplitWidth         = 35
-
-nnoremap <Space>u <cmd>UndotreeToggle<Cr>
-
-
 " Dadbod:
 let g:db_ui_save_location  = '~/.config/nvim/connections.json'
 let g:db_ui_winwidth = 35
-
-
-" Floaterm:
-let g:neoterm_autoscroll   = 1
-let g:floaterm_borderchars = ['─', '│', '─', '│', '┌', '┐', '┘', '└']
-let g:floaterm_width       = 0.99
-let g:floaterm_height      = 0.99
-let g:floaterm_position    = "top"
-
-tnoremap <C-o> <C-\><C-n>
-tnoremap <C-g><Return> <cmd>FloatermToggle<Cr>
-
-nnoremap <C-g><Return> <cmd>FloatermToggle<Cr>
-
-autocmd TermOpen term://* startinsert
-
-
-" FloatermRepl:
-" float run
-let g:floaterm_repl_runner = "~/.config/nvim/runner.sh"
-
-vnoremap <silent><Space>r :FloatermRepl<Cr>
 
 
 " AsyncrunAndAsyncTask:
@@ -610,147 +440,32 @@ let g:asyncrun_rootmarks    = [
             \ '.tasks'
             \ ]
 
-nnoremap <Space>r <cmd>AsyncTask start<Cr>
-nnoremap <Space>a :AsyncTask<space>
-
-autocmd FileType html nnoremap <silent><Space>r <cmd>AsyncTask xdg-open<Cr>
+nnoremap <silent><Space>r :AsyncTask start<Cr>
+nnoremap <silent><Space>a :AsyncTask<space>
 
 
-" Coc:
-let g:coc_global_extensions = [
-            \ 'coc-pyright',
-            \ 'coc-clangd',
-            \ 'coc-json',
-            \ 'coc-tsserver',
-            \ 'coc-html',
-            \ 'coc-css',
-            \ 'coc-vetur',
-            \ 'coc-yaml',
-            \ 'coc-vimlsp',
-            \ 'coc-snippets',
-            \ 'coc-diagnostic',
-            \ 'coc-markdownlint',
-            \ 'coc-lists',
-            \ 'coc-git',
-            \ 'coc-explorer',
-            \ 'coc-pairs',
-            \ 'coc-yank',
-            \ 'coc-leetcode',
-            \ 'coc-translator'
-            \ ]
+" Git:
+let g:gtgutter_sign_allow_clobber = 1
+let g:gitgutter_map_keys = 0
+let g:gitgutter_preview_win_floating = 0
+let g:gitgutter_sign_added = '+'
+let g:gitgutter_sign_modified = '~'
+let g:gitgutter_sign_removed = '-'
+let g:gitgutter_sign_modified_removed = '≃'
 
-" show documentation
-function! s:show_documentation()
-    if (index(['vim','help'], &filetype) >= 0)
-        execute 'h '.expand('<cword>')
-        nnoremap <buffer> q <cmd>q<Cr>
-    elseif (coc#rpc#ready())
-        call CocActionAsync('doHover')
-    else
-        execute '!' . &keywordprg . " " . expand('<cword>')
-    endif
-endfunction
+nnoremap <silent><Leader>f :GitGutterFold<CR>
+nnoremap <silent><Leader>p :GitGutterPreviewHunk<CR>
+nnoremap <silent><Leader>k :GitGutterPrevHunk<CR>
+nnoremap <silent><Leader>j :GitGutterNextHunk<CR>
 
-nnoremap gh <cmd>call <sid>show_documentation()<Cr>
-
-" coc-snippets
-let g:coc_snippet_next = '<C-j>'
-let g:coc_snippet_prev = '<C-k>'
-
-imap <C-j> <nop>
-
-vmap <C-j> <Plug>(coc-snippets-select)
-
-" file explorer
-nmap t <cmd>CocCommand explorer --sources=file+<Cr>
-
-" variable rename
-nmap crn <Plug>(coc-rename)
-
-" refresh in insert mode
-inoremap <silent><expr><C-r> coc#refresh()
-
-" refactor function
-nmap <silent><Space>R <Plug>(coc-refactor)
-
-" float window jump and hide
-nmap <silent><C-o> <Plug>(coc-float-jump)
-nmap <silent><C-q> <Plug>(coc-float-hide)
-
-" apply codeAction
-xmap <silent><Space>a <Plug>(coc-codeaction-selected)
-
-" go to code navigation
-nmap <silent>gd <Plug>(coc-definition)
-nmap <silent>gr <Plug>(coc-references)
-nmap <silent>gt <Plug>(coc-type-definition)
-nmap <silent>gi <Plug>(coc-implementation)
-
-" diagnostic jump
-nmap <silent>]d <Plug>(coc-diagnostic-next)
-nmap <silent>[d <Plug>(coc-diagnostic-prev)
-
-" git chunk jump
-nmap <silent><leader>j <Plug>(coc-git-nextchunk)
-nmap <silent><leader>k <Plug>(coc-git-prevchunk)
-
-" translate
-nmap <silent><Space>t <Plug>(coc-translator-e)
-
-vmap <silent><Space>t <Plug>(coc-translator-ev)
-
-" float window scroll
-nnoremap <nowait><expr><C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "<cmd>Neoformat<Cr>"
-nnoremap <nowait><expr><C-b> coc#float#has_scroll() ? coc#float#scroll(0) : Show_highlight_toggle()
-
-" scroll or move right
-inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<C-r>=coc#float#scroll(1)\<Cr>" : "\<Right>"
-inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<C-r>=coc#float#scroll(0)\<Cr>" : "\<Left>"
-
-" function and class
-xmap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-
-omap if <Plug>(coc-funcobj-i)
-omap af <Plug>(coc-funcobj-a)
-omap ic <Plug>(coc-classobj-i)
-omap ac <Plug>(coc-classobj-a)
-
-" coclist and coccommand
-nnoremap <Space>d <cmd>CocList diagnostics<Cr>
-nnoremap <Space>y <cmd>CocList yank<Cr>
-nnoremap <Space>f <cmd>CocList --regex files<Cr>
-nnoremap <Space>b <cmd>CocList buffers<Cr>
-nnoremap <Space>w <cmd>CocList lines<Cr>
-nnoremap <Space>g <cmd>CocList grep<Cr>
-nnoremap <Space>l <cmd>CocList<Cr>
-nnoremap <Space><C-m> <cmd>CocList --regex mru -A<Cr>
-nnoremap <Space>m <cmd>CocList marks<Cr>
-
-nnoremap <Space>c <cmd>CocCommand<Cr>
-nnoremap <leader>a <cmd>CocCommand git.chunkStage<Cr>
-nnoremap <leader>u <cmd>CocCommand git.chunkUndo<Cr>
-nnoremap <leader>p <cmd>CocCommand git.chunkInfo<Cr>
-nnoremap <leader>y <cmd>CocCommand git.copyUrl<Cr>
-nnoremap <leader>s <cmd>CocCommand git.showCommit<Cr>
-nnoremap <leader>f <cmd>CocCommand git.foldUnchanged<Cr>
-nnoremap <leader>r <cmd>CocCommand git.refresh<Cr>
-nnoremap <leader>b <cmd>CocCommand git.browserOpen<Cr>
-
-" organizeImport
-autocmd BufWritePre *.go silent call CocAction('runCommand', 'editor.action.organizeImport')
-
-" highlight the symbol and its references when holding the cursor
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" update signature help on jump placeholder
-autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+nnoremap <silent><Leader>b :Gblame<CR>
+nnoremap <silent><Leader>s :Gstatus<CR>
+nnoremap <silent><Leader>c :Gcommit<CR>
 
 
 " Languages:
 " Go:
+let g:go_version_warning                     = 0
 let g:go_echo_go_info                        = 0
 let g:go_doc_popup_window                    = 1
 let g:go_def_mapping_enabled                 = 0
@@ -786,81 +501,58 @@ let g:javascript_plugin_ngdoc                = 1
 let g:javascript_plugin_flow                 = 1
 
 
-" Markdown:
-" vim-markdown
-let g:vim_markdown_folding_disabled          = 1
-let g:vim_markdown_conceal                   = 0
-let g:vim_markdown_conceal_code_blocks       = 0
-let g:vim_markdown_math                      = 0
-
-" markdown-preview
-let g:mkdp_browser                           = 'chromium'
-let g:mkdp_auto_start                        = 0
-let g:mkdp_auto_close                        = 0
-let g:mkdp_refresh_slow                      = 0
-let g:mkdp_command_for_global                = 0
-let g:mkdp_open_to_the_world                 = 0
-let g:mkdp_open_ip                           = ''
-let g:mkdp_echo_preview_url                  = 0
-let g:mkdp_browserfunc                       = ''
-let g:mkdp_preview_options                   = {
-            \ 'mkit': {},
-            \ 'katex': {},
-            \ 'uml': {},
-            \ 'maid': {},
-            \ 'disable_sync_scroll': 0,
-            \ 'sync_scroll_type': 'middle',
-            \ 'hide_yaml_meta': 1,
-            \ 'sequence_diagrams': {},
-            \ 'flowchart_diagrams': {},
-            \ 'content_editable': v:false,
-            \ 'disable_filename': 0
-            \ }
-let g:mkdp_markdown_css                      = ''
-let g:mkdp_highlight_css                     = ''
-let g:mkdp_port                              = ''
-let g:mkdp_page_title                        = '${name}'
-
-
-" MarkdownSpell:
-autocmd BufReadPre,BufNewFile *.md setlocal spell spelllang=en_us,cjk
-
-noremap <Space>p <cmd>set spell!<Cr>
-
-
-" MarkdownPasteImage:
-func! Md_paste_image()
-    let cliptext = getreg('+')
-    if !filereadable(cliptext)
-        echo "[illeagal path]"
-        return
-    endif
-    let outdir = expand('%:p:h') . '/' . 'img'
-    if !isdirectory(outdir)
-        call mkdir(outdir)
-    endif
-    let l:tmpname = input('Image name: ')
-    if empty(l:tmpname)
-        let l:tmpname = 'imge_' . strftime("%Y-%m-%d-%H-%M-%S")
-    endif
-    let relpath =  './img/' . l:tmpname . '.' . split(cliptext, '\.')[-1]
-    call system('cp "' . cliptext . '" "' . relpath . '"')
-    execute "normal! i![I"
-    let ipos = getcurpos()
-    execute "normal! amage](" . relpath . ")"
-    call setpos('.', ipos)
-    execute "normal! ve\<C-g>"
-endfunc
-
-autocmd FileType markdown nnoremap <Space>i <cmd>call Md_paste_image()<Cr>
-
-
 " Misc:
 " Install:
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
     silent execute "!curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
     autocmd VimEnter * PlugInstall
 endif
+
+
+" Comment:
+autocmd FileType python,sh set commentstring=#\ %s
+autocmd FileType c,cpp set commentstring=//\ %s
+autocmd FileType markdown,md setlocal commentstring=<!--\ %s-->
+autocmd FileType sql setlocal commentstring=--\ %s
+
+
+" Hlsearch:
+autocmd BufReadPre * set nohlsearch
+
+function Hlsearch_toggle() abort
+    if &hlsearch == 1
+        set nohlsearch
+    else
+        set hlsearch
+    endif
+endfunction
+
+nnoremap <silent><Space>h :call Hlsearch_toggle()<Cr>
+
+
+" SaveCursor:
+au BufReadPost * if line("'\"")>1 && line("'\"") <= line("$") && &filetype != 'gitcommit' | exe "normal! g'\"" | endif
+
+
+" Super_L:
+function Super_L() abort
+    inoremap <C-l> <nop>
+    if &filetype == "go"
+        inoremap <C-l> :=
+    elseif &filetype == "python"
+        inoremap <C-l> ->
+    elseif &filetype == "sh"
+        inoremap <C-l> "${}"<Left><Left>
+        " elseif &filetype == "javascript"
+        "     inoremap <C-l> 
+        " elseif &filetype == "cpp"
+        "     inoremap <C-l> 
+        " elseif &filetype == "c"
+        "     inoremap <C-l> 
+    endif
+endfunction
+
+autocmd BufEnter * call Super_L()
 
 
 " Smooth_scroll:
@@ -899,91 +591,6 @@ endfunction
 
 nnoremap <silent><C-u> :call init#up(&scroll,6,1)<Cr>
 nnoremap <silent><C-d> :call init#down(&scroll,6,1)<Cr>
-
-
-" Comment:
-autocmd FileType python,sh set commentstring=#\ %s
-autocmd FileType c,cpp set commentstring=//\ %s
-autocmd FileType markdown,md setlocal commentstring=<!--\ %s-->
-autocmd FileType sql setlocal commentstring=--\ %s
-
-
-" Hlsearch:
-autocmd BufReadPre * set nohlsearch
-
-function Hlsearch_toggle() abort
-    if &hlsearch == 1
-        set nohlsearch
-    else
-        set hlsearch
-    endif
-endfunction
-
-nnoremap <Space>h <cmd>call Hlsearch_toggle()<Cr>
-
-
-" SaveCursor:
-au BufReadPost * if line("'\"")>1 && line("'\"") <= line("$") && &filetype != 'gitcommit' | exe "normal! g'\"" | endif
-
-
-" Hugefile:
-" hugefile let coc and vista_statusline dead
-" file maxsize
-let g:trigger_size         = 0.5 * 1024 * 1024
-
-" coc startup delay
-let g:coc_start_at_startup = 0
-
-" vista statusline
-function! NearestMethodOrFunction() abort
-    return get(b:, 'vista_nearest_method_or_function', '')
-endfunction
-
-" cocstart
-function! CocTimerStart(timer)
-    exec "CocStart"
-endfunction
-
-augroup hugefile
-    autocmd!
-    autocmd BufReadPre *
-                \ let size = getfsize(expand('<afile>')) |
-                \ if (size > g:trigger_size) || (size == -2) |
-                \ else |
-                \   call vista#RunForNearestMethodOrFunction() |
-                \ endif |
-                \ unlet size
-
-    autocmd VimEnter *
-                \ let size = getfsize(expand('<afile>')) |
-                \ if (size > g:trigger_size) || (size == -2) |
-                \   echohl WarningMsg | echomsg 'WARNING: altering options for this huge file!' | echohl None |
-                \ else |
-                \   call timer_start(500,'CocTimerStart',{'repeat':1}) |
-                \ endif |
-                \ unlet size
-augroup END
-
-
-" Super_L:
-function Super_L() abort
-    inoremap <C-l> <nop>
-    if &filetype == "go"
-        inoremap <C-l> :=
-    elseif &filetype == "python"
-        inoremap <C-l> ->
-    elseif &filetype == "sh"
-        inoremap <C-l> "${}"<Left><Left>
-        " elseif &filetype == "javascript"
-        "     inoremap <C-l> 
-        " elseif &filetype == "cpp"
-        "     inoremap <C-l> 
-        " elseif &filetype == "c"
-        "     inoremap <C-l> 
-    endif
-endfunction
-
-autocmd BufEnter * call Super_L()
 
 
 " OtherCommands:

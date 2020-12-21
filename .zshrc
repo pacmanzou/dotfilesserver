@@ -60,18 +60,10 @@ bindkey '^K' kill-line
 bindkey '^S' kill-word
 bindkey '^Q' fzf-cd-widget
 
-# highlight and autosuggestions
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-
 autoload -U compinit promptinit
 
 compinit
 promptinit
-
-# fzf
-source /usr/share/fzf/key-bindings.zsh
-source /usr/share/fzf/completion.zsh
 
 if command -v fd > /dev/null; then
   export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
@@ -90,12 +82,6 @@ prompt_suse_setup "$@"
 
 # alias
 alias r='ranger'
-alias syy='sudo pacman -Syy'
-alias syu='sudo pacman -Syu'
-alias syyu='sudo pacman -Syyu'
-alias scc='sudo pacman -Scc'
-alias sudo='sudo -E'
-alias qtdq='sudo pacman -Rns $(pacman -Qtdq)'
 alias mv='mv -i'
 alias cp='cp -i'
 alias rm='rm -i'
@@ -110,9 +96,3 @@ else
     alias la='ls -la'
     alias ll='ls -l'
 fi
-
-# misc
-# if [ -z "$TMUX" ]; then
-#     SESSION_NAME="LOCALHOST"
-#     tmux new-session -s $SESSION_NAME
-# fi
