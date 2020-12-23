@@ -26,6 +26,7 @@ export LESS_TERMCAP_so=$'\e[01;33m'
 export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;4;31m'
 
+
 # history
 export HISTFILE="$HOME/.zsh_history"
 
@@ -64,6 +65,12 @@ autoload -U compinit promptinit
 
 compinit
 promptinit
+
+
+# highlight and autosuggestions
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 
 if command -v fd > /dev/null; then
   export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
