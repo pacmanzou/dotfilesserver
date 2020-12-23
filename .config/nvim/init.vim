@@ -201,7 +201,7 @@ Plug 'mg979/vim-visual-multi'
 Plug 'jiangmiao/auto-pairs'
 
 " git manager
-Plug 'airblade/vim-gitgutter'
+" Plug 'airblade/vim-gitgutter'
 
 " database manager
 Plug 'tpope/vim-dadbod',                     { 'on': 'DBUI'}
@@ -443,19 +443,138 @@ nnoremap <silent><Space>r :AsyncTask start<Cr>
 nnoremap <silent><Space>a :AsyncTask<space>
 
 
-" Git:
-let g:gtgutter_sign_allow_clobber = 1
-let g:gitgutter_map_keys = 0
-let g:gitgutter_preview_win_floating = 0
-let g:gitgutter_sign_added = '+'
-let g:gitgutter_sign_modified = '~'
-let g:gitgutter_sign_removed = '-'
-let g:gitgutter_sign_modified_removed = '≃'
+" Coc:
+let g:coc_global_extensions = [
+            \ 'coc-pyright',
+            \ 'coc-clangd',
+            \ 'coc-json',
+            \ 'coc-tsserver',
+            \ 'coc-html',
+            \ 'coc-css',
+            \ 'coc-vetur',
+            \ 'coc-yaml',
+            \ 'coc-vimlsp',
+            \ 'coc-snippets',
+            \ 'coc-diagnostic',
+            \ 'coc-lists',
+            \ 'coc-git',
+            \ 'coc-explorer',
+            \ 'coc-yank',
+            \ 'coc-translator'
+            \ ]
 
-nnoremap <silent><Leader>f :GitGutterFold<CR>
-nnoremap <silent><Leader>p :GitGutterPreviewHunk<CR>
-nnoremap <silent><Leader>k :GitGutterPrevHunk<CR>
-nnoremap <silent><Leader>j :GitGutterNextHunk<CR>
+" show documentation
+function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+        nnoremap <buffer> q <cmd>q<Cr>
+    elseif (coc#rpc#ready())
+        call CocActionAsync('doHover')
+    else
+        execute '!' . &keywordprg . " " . expand('<cword>')
+    endif
+endfunction
+
+nnoremap gh <cmd>call <sid>show_documentation()<Cr>
+
+" coc-snippets
+let g:coc_snippet_next = '<C-j>'
+let g:coc_snippet_prev = '<C-k>'
+
+imap <C-j> <nop>
+
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" file explorer
+nmap t <cmd>CocCommand explorer --sources=file+<Cr>
+
+" variable rename
+nmap crn <Plug>(coc-rename)
+
+" refresh in insert mode
+inoremap <silent><expr><C-r> coc#refresh()
+
+" refactor function
+nmap <silent><Space>R <Plug>(coc-refactor)
+
+" float window jump and hide
+nmap <silent><C-o> <Plug>(coc-float-jump)
+nmap <silent><C-q> <Plug>(coc-float-hide)
+
+" apply codeAction
+xmap <silent><Space>a <Plug>(coc-codeaction-selected)
+
+" go to code navigation
+nmap <silent>gd <Plug>(coc-definition)
+nmap <silent>gr <Plug>(coc-references)
+nmap <silent>gt <Plug>(coc-type-definition)
+nmap <silent>gi <Plug>(coc-implementation)
+
+" diagnostic jump
+nmap <silent>]d <Plug>(coc-diagnostic-next)
+nmap <silent>[d <Plug>(coc-diagnostic-prev)
+
+" git chunk jump
+nmap <silent><leader>j <Plug>(coc-git-nextchunk)
+nmap <silent><leader>k <Plug>(coc-git-prevchunk)
+
+" translate
+nmap <silent><Space>t <Plug>(coc-translator-e)
+
+vmap <silent><Space>t <Plug>(coc-translator-ev)
+
+" float window scroll
+nnoremap <nowait><expr><C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "<cmd>Neoformat<Cr>"
+nnoremap <nowait><expr><C-b> coc#float#has_scroll() ? coc#float#scroll(0) : Show_highlight_toggle()
+
+" scroll or move right
+inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<C-r>=coc#float#scroll(1)\<Cr>" : "\<Right>"
+inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<C-r>=coc#float#scroll(0)\<Cr>" : "\<Left>"
+
+" function and class
+xmap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+
+omap if <Plug>(coc-funcobj-i)
+omap af <Plug>(coc-funcobj-a)
+omap ic <Plug>(coc-classobj-i)
+omap ac <Plug>(coc-classobj-a)
+
+" coclist and coccommand
+nnoremap <Space>d <cmd>CocList diagnostics<Cr>
+nnoremap <Space>y <cmd>CocList yank<Cr>
+nnoremap <Space>f <cmd>CocList --regex files<Cr>
+nnoremap <Space>b <cmd>CocList buffers<Cr>
+nnoremap <Space>w <cmd>CocList lines<Cr>
+nnoremap <Space>g <cmd>CocList grep<Cr>
+nnoremap <Space>l <cmd>CocList<Cr>
+nnoremap <Space><C-m> <cmd>CocList --regex mru -A<Cr>
+nnoremap <Space>m <cmd>CocList marks<Cr>
+
+nnoremap <Space>c <cmd>CocCommand<Cr>
+nnoremap <leader>a <cmd>CocCommand git.chunkStage<Cr>
+nnoremap <leader>u <cmd>CocCommand git.chunkUndo<Cr>
+nnoremap <leader>p <cmd>CocCommand git.chunkInfo<Cr>
+nnoremap <leader>y <cmd>CocCommand git.copyUrl<Cr>
+nnoremap <leader>s <cmd>CocCommand git.showCommit<Cr>
+nnoremap <leader>f <cmd>CocCommand git.foldUnchanged<Cr>
+nnoremap <leader>r <cmd>CocCommand git.refresh<Cr>
+nnoremap <leader>b <cmd>CocCommand git.browserOpen<Cr>
+" Git:
+" let g:gtgutter_sign_allow_clobber = 1
+" let g:gitgutter_map_keys = 0
+" let g:gitgutter_preview_win_floating = 0
+" let g:gitgutter_sign_added = '+'
+" let g:gitgutter_sign_modified = '~'
+" let g:gitgutter_sign_removed = '-'
+" let g:gitgutter_sign_modified_removed = '≃'
+
+" nnoremap <silent><Leader>f :GitGutterFold<CR>
+" nnoremap <silent><Leader>p :GitGutterPreviewHunk<CR>
+" nnoremap <silent><Leader>k :GitGutterPrevHunk<CR>
+" nnoremap <silent><Leader>j :GitGutterNextHunk<CR>
 
 
 " Languages:
