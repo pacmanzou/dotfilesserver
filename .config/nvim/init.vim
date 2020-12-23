@@ -10,18 +10,6 @@ let mapleader                           = ","
 let g:netrw_nogx                        = 1
 let g:python_host_prog                  = '/usr/bin/python2'
 let g:python3_host_prog                 = '/usr/bin/python3'
-let g:clipboard                         = {
-            \ 'name': 'xsel_override',
-            \ 'copy': {
-            \ '+': 'xsel --input --clipboard',
-            \ '*': 'xsel --input --primary',
-            \ },
-            \ 'paste': {
-            \ '+': 'xsel --output --clipboard',
-            \ '*': 'xsel --output --primary',
-            \ },
-            \ 'cache_enabled': 0,
-            \ }
 
 
 " Set:
@@ -487,8 +475,8 @@ let g:skylight_position = 'auto'
 let g:skylight_width = 0.9
 let g:skylight_height = 0.5
 
-nnoremap gj <cmd>SkylightJumpTo<Cr>
-nnoremap gp <cmd>SkylightPreview<Cr>
+nnoremap gj <cmd>Skylight! file<Cr>
+nnoremap gp <cmd>Skylight file<Cr>
 
 
 " FileManager:
@@ -786,34 +774,6 @@ let g:vim_markdown_folding_disabled          = 1
 let g:vim_markdown_conceal                   = 0
 let g:vim_markdown_conceal_code_blocks       = 0
 let g:vim_markdown_math                      = 0
-
-" markdown-preview
-let g:mkdp_browser                           = 'chromium'
-let g:mkdp_auto_start                        = 0
-let g:mkdp_auto_close                        = 0
-let g:mkdp_refresh_slow                      = 0
-let g:mkdp_command_for_global                = 0
-let g:mkdp_open_to_the_world                 = 0
-let g:mkdp_open_ip                           = ''
-let g:mkdp_echo_preview_url                  = 0
-let g:mkdp_browserfunc                       = ''
-let g:mkdp_preview_options                   = {
-            \ 'mkit': {},
-            \ 'katex': {},
-            \ 'uml': {},
-            \ 'maid': {},
-            \ 'disable_sync_scroll': 0,
-            \ 'sync_scroll_type': 'middle',
-            \ 'hide_yaml_meta': 1,
-            \ 'sequence_diagrams': {},
-            \ 'flowchart_diagrams': {},
-            \ 'content_editable': v:false,
-            \ 'disable_filename': 0
-            \ }
-let g:mkdp_markdown_css                      = ''
-let g:mkdp_highlight_css                     = ''
-let g:mkdp_port                              = ''
-let g:mkdp_page_title                        = '${name}'
 
 
 " MarkdownSpell:
