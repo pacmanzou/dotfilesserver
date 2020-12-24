@@ -319,7 +319,7 @@ endfunction
 
 
 " Crystalline:
-" coc diagnostic
+" coc
 function! StatusDiagnostic() abort
     let info = get(b:, 'coc_diagnostic_info', {})
     if empty(info) | return '' | endif
@@ -333,15 +333,19 @@ function! StatusDiagnostic() abort
     return join(msgs)
 endfunction
 
-" coc git
-function! Gitstatusg() abort
-    let statusg = get(g:, 'coc_git_status', '')
-    return  statusg
+function! GitstatusG() abort
+    let status = get(g:, 'coc_git_status', '')
+    return  status
 endfunction
 
-function! Gitstatusb() abort
-    let statusb = get(b:, 'coc_git_status', '')
-    return  statusb
+function! GitstatusB() abort
+    let status = get(b:, 'coc_git_status', '')
+    return  status
+endfunction
+
+function! CurrentFunction() abort
+    let status = get(b:, 'coc_current_function', '')
+    return  status
 endfunction
 
 " statusline
@@ -352,7 +356,7 @@ function! StatusLine(current, width)
     else
         let l:s .= '%#CrystallineInactive#'
     endif
-    let l:s .= '%{CapsLockStatusline()}%{&spell?"SPELL ":""}%{&hlsearch?"HLSEARCH ":""} [%{NearestMethodOrFunction()}]%h%w%m%r'
+    let l:s .= '%{CapsLockStatusline()}%{&spell?"SPELL ":""}%{&hlsearch?"HLSEARCH ":""} [%{CurrentFunction()}]%h%w%m%r'
     if a:current
         let l:s .= crystalline#right_sep('', 'Fill') . '  %l,%c,%L  %{StatusDiagnostic()}'
     endif
@@ -362,7 +366,7 @@ function! StatusLine(current, width)
         let l:s .= crystalline#left_mode_sep('')
     endif
     if a:width > 40
-        let l:s .= '%{Gitstatusb()} %{Gitstatusg()}  [%{&ft}][%{&fenc!=#""?&fenc:&enc}][%{&ff}]'
+        let l:s .= '%{GitstatusB()} %{GitstatusG()}  [%{&ft}][%{&fenc!=#""?&fenc:&enc}][%{&ff}]'
     else
         let l:s .= ''
     endif
@@ -471,9 +475,10 @@ vmap <silent>x <Plug>(Exchange)
 
 " Skylight:
 let g:skylight_jump_command = 'split'
-let g:skylight_position = 'auto'
-let g:skylight_width = 0.9
-let g:skylight_height = 0.5
+let g:skylight_position     = 'auto'
+let g:skylight_width        = 0.8
+let g:skylight_height       = 0.5
+let g:skylight_borderchars  = ['─', '│', '─', '│', '┌', '┐', '┘', '└']
 
 nnoremap gj <cmd>Skylight! file<Cr>
 nnoremap gp <cmd>Skylight file<Cr>
@@ -609,16 +614,16 @@ let g:coc_global_extensions = [
             \ 'coc-css',
             \ 'coc-vetur',
             \ 'coc-yaml',
+            \ 'coc-markdownlint',
             \ 'coc-vimlsp',
             \ 'coc-snippets',
             \ 'coc-diagnostic',
-            \ 'coc-markdownlint',
             \ 'coc-lists',
+            \ 'coc-yank',
             \ 'coc-git',
             \ 'coc-explorer',
-            \ 'coc-yank',
-            \ 'coc-leetcode',
-            \ 'coc-translator'
+            \ 'coc-translator',
+            \ 'coc-leetcode'
             \ ]
 
 " show documentation
@@ -638,8 +643,6 @@ nnoremap gh <cmd>call <sid>show_documentation()<Cr>
 " coc-snippets
 let g:coc_snippet_next = '<C-j>'
 let g:coc_snippet_prev = '<C-k>'
-
-imap <C-j> <nop>
 
 vmap <C-j> <Plug>(coc-snippets-select)
 
@@ -881,11 +884,6 @@ let g:trigger_size         = 0.5 * 1024 * 1024
 " coc startup delay
 let g:coc_start_at_startup = 0
 
-" vista statusline
-function! NearestMethodOrFunction() abort
-    return get(b:, 'vista_nearest_method_or_function', '')
-endfunction
-
 " cocstart
 function! CocTimerStart(timer)
     exec "CocStart"
@@ -893,18 +891,10 @@ endfunction
 
 augroup hugefile
     autocmd!
-    autocmd BufReadPre *
-                \ let size = getfsize(expand('<afile>')) |
-                \ if (size > g:trigger_size) || (size == -2) |
-                \ else |
-                \   call vista#RunForNearestMethodOrFunction() |
-                \ endif |
-                \ unlet size
-
     autocmd VimEnter *
                 \ let size = getfsize(expand('<afile>')) |
                 \ if (size > g:trigger_size) || (size == -2) |
-                \   echohl WarningMsg | echomsg 'WARNING: altering options for this huge file!' | echohl None |
+                \   echohl WarningMsg | echomsg 'WARNING: Coc is dead for this huge file!' | echohl None |
                 \ else |
                 \   call timer_start(100,'CocTimerStart',{'repeat':1}) |
                 \ endif |
@@ -912,15 +902,19 @@ augroup hugefile
 augroup END
 
 
-" Super_L:
-function Super_L() abort
-    inoremap <C-l> <nop>
+" Super_JL:
+function Super_JL() abort
+    imap <C-l> <nop>
+    imap <C-j> <nop>
     if &filetype == "go"
-        inoremap <C-l> :=
+        imap <C-j> fmt.Println()<Left>
+        imap <C-l> :=
     elseif &filetype == "python"
-        inoremap <C-l> ->
+        imap <C-j> print()<Left>
+        imap <C-l> ->
     elseif &filetype == "sh"
-        inoremap <C-l> "${}"<Left><Left>
+        imap <C-j> echo ""<Left>
+        imap <C-l> "${}"<Left><Left>
         " elseif &filetype == "javascript"
         "     inoremap <C-l> 
         " elseif &filetype == "cpp"
@@ -930,7 +924,7 @@ function Super_L() abort
     endif
 endfunction
 
-autocmd BufEnter * call Super_L()
+autocmd BufEnter * call Super_JL()
 
 
 " OtherCommands:
